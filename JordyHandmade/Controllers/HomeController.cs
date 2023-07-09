@@ -4,12 +4,22 @@
     using System.Diagnostics;
 
     using JordyHandmade.Web.ViewModels.Home;
+    using JordyHandmade.Services.Data.Interfaces;
 
     public class HomeController : Controller
-    {  
-        public IActionResult Index()
+    {
+        private readonly IProductService productService;
+
+        public HomeController(IProductService productService)
         {
-            return View();
+            this.productService = productService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<IndexViewModel> viewModel = await this.productService.LastThreeProductsAsync();
+            
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

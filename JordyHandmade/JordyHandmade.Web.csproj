@@ -19,6 +19,8 @@
     <ProjectReference Include="..\JordyHandmade.Common\JordyHandmade.Common.csproj" />
     <ProjectReference Include="..\JordyHandmade.Data.Models\JordyHandmade.Data.Models.csproj" />
     <ProjectReference Include="..\JordyHandmade.Data\JordyHandmade.Data.csproj" />
+    <ProjectReference Include="..\JordyHandmade.Services.Data\JordyHandmade.Services.Data.csproj" />
+    <ProjectReference Include="..\JordyHandmade.Web.Infrastructure\JordyHandmade.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\JordyHandmade.Web.ViewModels\JordyHandmade.Web.ViewModels.csproj" />
   </ItemGroup>
 

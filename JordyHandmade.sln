@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordyHandmade.Services.Data", "JordyHandmade.Services.Data\JordyHandmade.Services.Data.csproj", "{4D48A621-FD3A-4E24-93B3-9DD792930676}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordyHandmade.Web.Infrastructure", "JordyHandmade.Web.Infrastructure\JordyHandmade.Web.Infrastructure.csproj", "{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{4D48A621-FD3A-4E24-93B3-9DD792930676}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D48A621-FD3A-4E24-93B3-9DD792930676}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D48A621-FD3A-4E24-93B3-9DD792930676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{F82A4BE4-7289-401F-9047-BCC02D709458} = {9C3C1921-37AC-4272-9BF3-4C7238F255DD}
 		{B29A5F2A-C76F-49C6-81D3-4C50458C1B5F} = {7DB4E217-C995-49AE-88DC-FFF5F59A1927}
 		{4D48A621-FD3A-4E24-93B3-9DD792930676} = {A14F18DF-9E7F-4093-9C23-A576833F0893}
+		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA} = {7DB4E217-C995-49AE-88DC-FFF5F59A1927}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66CE1C9F-6A6D-43A9-981E-26774BF96E65}

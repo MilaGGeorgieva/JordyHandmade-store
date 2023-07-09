@@ -4,7 +4,9 @@ namespace JordyHandmade
 
     using JordyHandmade.Data;
     using JordyHandmade.Data.Models;
-    using Microsoft.AspNetCore.Identity;    
+    using JordyHandmade.Web.Infrastructure.Extensions;
+    using Microsoft.AspNetCore.Identity;
+    using JordyHandmade.Services.Data.Interfaces;
 
     public class Program
     {
@@ -28,6 +30,8 @@ namespace JordyHandmade
             })
                 .AddEntityFrameworkStores<JordyHandmadeDbContext>();
 
+            builder.Services.AddAppServices(typeof(IProductService));
+            
             builder.Services.AddControllersWithViews();
 
             WebApplication app = builder.Build();
