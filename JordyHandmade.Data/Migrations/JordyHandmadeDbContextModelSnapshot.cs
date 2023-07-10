@@ -317,7 +317,7 @@ namespace JordyHandmade.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 5, 19, 33, 36, 882, DateTimeKind.Utc).AddTicks(4751))
+                        .HasDefaultValue(new DateTime(2023, 7, 10, 19, 34, 7, 983, DateTimeKind.Utc).AddTicks(4684))
                         .HasComment("Date product was created");
 
                     b.Property<string>("Description")
@@ -343,6 +343,10 @@ namespace JordyHandmade.Data.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasComment("Product price");
 
+                    b.Property<int>("QuantityInStock")
+                        .HasColumnType("int")
+                        .HasComment("Product quantity available");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -354,33 +358,36 @@ namespace JordyHandmade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6e644287-ecb8-46bd-898c-e32dff8dd8a7"),
+                            Id = new Guid("7025a6a2-ef69-45c8-8cae-1fb61b23667f"),
                             CategoryId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Sweet heart-like pillow for decoration. Made with pure cotton cover and decorated with beads. Ideal for Valentine's gifts!",
                             ImageUrl = "/Images/ProductImages/HeartPillows.jpg",
                             Name = "Heart pillow",
-                            Price = 20.00m
+                            Price = 20.00m,
+                            QuantityInStock = 6
                         },
                         new
                         {
-                            Id = new Guid("f567d4f1-1a75-4018-ab36-aa2b4e8640ba"),
+                            Id = new Guid("f020a5aa-7fc3-4ff4-ba52-0f8d934fc296"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Crochet backpack/sack in sunny/summer pattern. Lined with 100% cotton inside in yellow color with polka dots, has 2 pockets - suitable for mobilephones. Ideal for sea beach or city life!",
                             ImageUrl = "/Images/ProductImages/SunnyBackpack.jpg",
                             Name = "Bright sunny backpack",
-                            Price = 25.00m
+                            Price = 25.00m,
+                            QuantityInStock = 1
                         },
                         new
                         {
-                            Id = new Guid("0019dbb6-0c40-45d8-924b-d6a37ba88d66"),
+                            Id = new Guid("0369b41e-1ad1-466b-9de9-cac4d61477dd"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A small jeans bag with hand embroidered kittens. Lined with bright green linen, 5 pockets, snap buttons, has a matching mobile phone case with velcro bands and a small coin purse with zipper. ",
                             ImageUrl = "/Images/ProductImages/DenimBagSet.jpg",
                             Name = "Girlish style denim bag set",
-                            Price = 29.00m
+                            Price = 29.00m,
+                            QuantityInStock = 1
                         });
                 });
 

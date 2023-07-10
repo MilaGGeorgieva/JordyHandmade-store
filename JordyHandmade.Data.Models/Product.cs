@@ -39,6 +39,9 @@
         [Comment("Date product was created")]
         public DateTime CreatedOn { get; set; }
 
+        [Comment("Product quantity available")]
+        public int QuantityInStock { get; set; }
+
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 

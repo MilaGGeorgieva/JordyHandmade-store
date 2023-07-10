@@ -99,7 +99,8 @@ namespace JordyHandmade.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false, comment: "Product description"),
                     ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, comment: "Product photo"),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false, comment: "Product price"),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 5, 19, 33, 36, 882, DateTimeKind.Utc).AddTicks(4751), comment: "Date product was created"),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 10, 19, 34, 7, 983, DateTimeKind.Utc).AddTicks(4684), comment: "Date product was created"),
+                    QuantityInStock = table.Column<int>(type: "int", nullable: false, comment: "Product quantity available"),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -399,18 +400,18 @@ namespace JordyHandmade.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price" },
-                values: new object[] { new Guid("0019dbb6-0c40-45d8-924b-d6a37ba88d66"), 2, "A small jeans bag with hand embroidered kittens. Lined with bright green linen, 5 pockets, snap buttons, has a matching mobile phone case with velcro bands and a small coin purse with zipper. ", "/Images/ProductImages/DenimBagSet.jpg", "Girlish style denim bag set", 29.00m });
+                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price", "QuantityInStock" },
+                values: new object[] { new Guid("0369b41e-1ad1-466b-9de9-cac4d61477dd"), 2, "A small jeans bag with hand embroidered kittens. Lined with bright green linen, 5 pockets, snap buttons, has a matching mobile phone case with velcro bands and a small coin purse with zipper. ", "/Images/ProductImages/DenimBagSet.jpg", "Girlish style denim bag set", 29.00m, 1 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price" },
-                values: new object[] { new Guid("6e644287-ecb8-46bd-898c-e32dff8dd8a7"), 1, "Sweet heart-like pillow for decoration. Made with pure cotton cover and decorated with beads. Ideal for Valentine's gifts!", "/Images/ProductImages/HeartPillows.jpg", "Heart pillow", 20.00m });
+                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price", "QuantityInStock" },
+                values: new object[] { new Guid("7025a6a2-ef69-45c8-8cae-1fb61b23667f"), 1, "Sweet heart-like pillow for decoration. Made with pure cotton cover and decorated with beads. Ideal for Valentine's gifts!", "/Images/ProductImages/HeartPillows.jpg", "Heart pillow", 20.00m, 6 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price" },
-                values: new object[] { new Guid("f567d4f1-1a75-4018-ab36-aa2b4e8640ba"), 2, "Crochet backpack/sack in sunny/summer pattern. Lined with 100% cotton inside in yellow color with polka dots, has 2 pockets - suitable for mobilephones. Ideal for sea beach or city life!", "/Images/ProductImages/SunnyBackpack.jpg", "Bright sunny backpack", 25.00m });
+                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price", "QuantityInStock" },
+                values: new object[] { new Guid("f020a5aa-7fc3-4ff4-ba52-0f8d934fc296"), 2, "Crochet backpack/sack in sunny/summer pattern. Lined with 100% cotton inside in yellow color with polka dots, has 2 pockets - suitable for mobilephones. Ideal for sea beach or city life!", "/Images/ProductImages/SunnyBackpack.jpg", "Bright sunny backpack", 25.00m, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_TownId",

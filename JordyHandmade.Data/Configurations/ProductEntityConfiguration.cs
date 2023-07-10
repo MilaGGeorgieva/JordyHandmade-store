@@ -40,6 +40,7 @@
                                 "Ideal for Valentine's gifts!",
                 ImageUrl = "/Images/ProductImages/HeartPillows.jpg",
                 Price = 20.00M,
+                QuantityInStock = 6,
                 CategoryId = 1
             };
             products.Add(product);
@@ -53,6 +54,7 @@
                                 "Ideal for sea beach or city life!",
                 ImageUrl = "/Images/ProductImages/SunnyBackpack.jpg",
                 Price = 25.00M,
+                QuantityInStock = 1,
                 CategoryId = 2
             };
             products.Add(product);
@@ -66,6 +68,7 @@
                                 "a small coin purse with zipper. ",
                 ImageUrl = "/Images/ProductImages/DenimBagSet.jpg",
                 Price = 29.00M,
+                QuantityInStock = 1,
                 CategoryId = 2
             };
             products.Add(product);
