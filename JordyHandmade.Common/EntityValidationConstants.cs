@@ -27,6 +27,9 @@
 
             //public const decimal PriceMinValue = 0.01m;
             //public const decimal PriceMaxValue = 2000.00m;
+
+            public const int QuantityInStockMinValue = 0;
+            public const int QuantityInStockMaxValue = 50; 
         }
 
         public static class Supplier 
@@ -82,7 +85,7 @@
             public const int DiscountMinValue = 5;
             public const int DiscountMaxValue = 20;
             public const int OrderStatusMin = 0;
-            public const int OrderStatusMax = 4;
+            public const int OrderStatusMax = 5;
         }
 
         public static class ClientCard 

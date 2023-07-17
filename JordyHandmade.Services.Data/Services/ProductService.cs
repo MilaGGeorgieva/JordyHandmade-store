@@ -1,4 +1,5 @@
 ﻿using JordyHandmade.Data;
+using JordyHandmade.Data.Models;
 using JordyHandmade.Services.Data.Interfaces;
 using JordyHandmade.Web.ViewModels.Home;
 using JordyHandmade.Web.ViewModels.Product;
@@ -52,6 +53,59 @@ namespace JordyHandmade.Services.Data.Services
             return allProducts;
         }
 
+		public async Task<DetailsViewModel> GetDetailsAsync(string id)
+		{
+            DetailsViewModel detailsModel = await this.dbContext
+                .Products
+                .Select(p => new DetailsViewModel()
+                {
+                    Id = p.Id.ToString(),
+                    Name = p.Name,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    QuantityInStock = p.QuantityInStock
+                })
+                .FirstAsync(p => p.Id == id);
 
+            return detailsModel;
+		}
+
+        public async Task<bool> ExistsByIdAsync(string id)
+        {
+            bool result = await this.dbContext
+                .Products
+                .AnyAsync(p => p.Id.ToString() == id);
+
+            return result;
+        }
+
+        public async Task<int> GetQuantityInStockByIdAsync(string id)
+        {
+            Product product = await this.dbContext
+                .Products
+                .FirstAsync(p => p.Id.ToString() == id);
+
+            int result = product.QuantityInStock;
+
+            return result;
+        }
+
+        public async Task AddProductAsync(ProductFormModel formModel)
+        {
+            Product product = new Product() 
+            {
+                Name = formModel.Name,
+                Description = formModel.Description,
+                ImageUrl = formModel.ImageUrl,
+                Price = formModel.Price,
+                CreatedOn = DateTime.Parse(formModel.CreatedOn),
+                QuantityInStock = formModel.QuantityInStock,
+                CategoryId = formModel.CategoryId,
+            };
+
+            await this.dbContext.AddAsync(product);
+            await this.dbContext.SaveChangesAsync();
+        }
     }
 }

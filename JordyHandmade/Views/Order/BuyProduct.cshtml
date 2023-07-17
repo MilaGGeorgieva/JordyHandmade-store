@@ -1,0 +1,35 @@
+﻿@model OrderFormModel
+
+@{
+    ViewData["Title"] = "Buy product";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<div class="row">
+    <div class="card w-100">
+        <img class="card-img-top" style="width: 18rem;"
+             src="@Model.ProductToBuy.ImageUrl" alt="Product Image">
+        <div class="card-body">
+            <h3 class="card-title text-center">@Model.ProductToBuy.Name</h3>
+            <p class="mb-0"><span class="fw-bold">Description: </span>@Model.ProductToBuy.Description</p>
+            <p class="mb-0"><span class="fw-bold">Price: </span>@Model.ProductToBuy.Price</p>
+            <p class="mb-0"><span class="fw-bold">Available quantity: </span>@Model.ProductToBuy.QuantityInStock</p>
+            <form asp-controller="Order" asp-action="BuyProduct" asp-route-id="@Model.ProductToBuy.Id">
+			    <div class="mb-3">
+				    <label asp-for="Quantity" class="form-label">Quantity (@Model.ProductToBuy.QuantityInStock pcs available currently)</label>
+				    <input asp-for="Quantity" type="number" class="form-control" aria-required="true" min="1" max="@Model.ProductToBuy.QuantityInStock"/>
+				    <span asp-validation-for="Quantity" class="text-danger"></span>
+			    </div>
+                <div class="mb-3">
+                    <input class="btn btn-primary" type="submit" value="BuyProduct" />
+                </div>
+            </form>
+        
+        </div>
+
+        <a asp-controller="Product" asp-action="All" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to All Products</a>
+
+    </div>
+</div> 

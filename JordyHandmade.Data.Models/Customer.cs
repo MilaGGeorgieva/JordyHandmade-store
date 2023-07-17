@@ -18,11 +18,11 @@
         [Comment("Rating of the customer")]
         public CustomerRating Rating { get; set; }
 
-        public Guid AddressId { get; set; }
-        public Address Address { get; set; } = null!;
+        public Guid? AddressId { get; set; }
+        public Address? Address { get; set; }
 
-        public Guid CardId { get; set; }
-        public virtual ClientCard Card { get; set; } = null!;
+        public Guid? CardId { get; set; }
+        public virtual ClientCard? Card { get; set; } = null!;
 
         public ICollection<Order> Orders { get; set; }
     }

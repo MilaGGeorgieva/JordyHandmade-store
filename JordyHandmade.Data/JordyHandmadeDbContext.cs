@@ -2,6 +2,7 @@
 {
     using JordyHandmade.Data.Configurations;
     using JordyHandmade.Data.Models;
+    using JordyHandmade.Data.Models.Enums;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,10 @@
                 .WithOne(c => c.Card)
                 .HasForeignKey<Customer>(c => c.CardId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Customer>()
+                .Property(p => p.Rating)
+                .HasDefaultValue(CustomerRating.New);
 
             modelBuilder.ApplyConfiguration(new AddressEntityConfiguration());
             

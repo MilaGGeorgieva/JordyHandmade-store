@@ -13,5 +13,13 @@ namespace JordyHandmade.Services.Data.Interfaces
         Task<IEnumerable<IndexViewModel>> LastThreeProductsAsync();
 
         Task<IEnumerable<AllViewModel>> GetAllAsync();
+
+        Task<DetailsViewModel> GetDetailsAsync(string id);
+
+        Task<bool> ExistsByIdAsync(string id);
+
+        Task<int> GetQuantityInStockByIdAsync(string id);
+
+        Task AddProductAsync(ProductFormModel formModel);
     }
 }

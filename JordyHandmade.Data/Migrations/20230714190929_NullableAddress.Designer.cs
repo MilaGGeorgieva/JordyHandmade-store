@@ -4,6 +4,7 @@ using JordyHandmade.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JordyHandmade.Data.Migrations
 {
     [DbContext(typeof(JordyHandmadeDbContext))]
-    partial class JordyHandmadeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230714190929_NullableAddress")]
+    partial class NullableAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,7 +138,7 @@ namespace JordyHandmade.Data.Migrations
                     b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CardId")
+                    b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -174,9 +176,7 @@ namespace JordyHandmade.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("Rating")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1)
                         .HasComment("Rating of the customer");
 
                     b.Property<string>("SecurityStamp")
@@ -194,8 +194,7 @@ namespace JordyHandmade.Data.Migrations
                     b.HasIndex("AddressId");
 
                     b.HasIndex("CardId")
-                        .IsUnique()
-                        .HasFilter("[CardId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -320,7 +319,7 @@ namespace JordyHandmade.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 15, 9, 44, 37, 60, DateTimeKind.Utc).AddTicks(1046))
+                        .HasDefaultValue(new DateTime(2023, 7, 14, 19, 9, 29, 135, DateTimeKind.Utc).AddTicks(2132))
                         .HasComment("Date product was created");
 
                     b.Property<string>("Description")
@@ -361,7 +360,7 @@ namespace JordyHandmade.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("21ebbe22-d566-4466-8037-e34d34233965"),
+                            Id = new Guid("f186342b-a61a-4375-9096-a193dd24cd3a"),
                             CategoryId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Sweet heart-like pillow for decoration. Made with pure cotton cover and decorated with beads. Ideal for Valentine's gifts!",
@@ -372,7 +371,7 @@ namespace JordyHandmade.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ba745eba-864c-48df-bfd7-96329d565dbf"),
+                            Id = new Guid("92c66c88-e459-4996-aff5-31c7325358d3"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Crochet backpack/sack in sunny/summer pattern. Lined with 100% cotton inside in yellow color with polka dots, has 2 pockets - suitable for mobilephones. Ideal for sea beach or city life!",
@@ -383,7 +382,7 @@ namespace JordyHandmade.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ae147215-af0b-4ebc-be80-859616d09a36"),
+                            Id = new Guid("6f746f35-0990-4ff9-995a-d702ece65628"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A small jeans bag with hand embroidered kittens. Lined with bright green linen, 5 pockets, snap buttons, has a matching mobile phone case with velcro bands and a small coin purse with zipper. ",
@@ -637,7 +636,8 @@ namespace JordyHandmade.Data.Migrations
                     b.HasOne("JordyHandmade.Data.Models.ClientCard", "Card")
                         .WithOne("Customer")
                         .HasForeignKey("JordyHandmade.Data.Models.Customer", "CardId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Address");
 
