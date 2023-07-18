@@ -6,9 +6,7 @@
     using static JordyHandmade.Common.EntityValidationConstants.Product;
 
     public class ProductFormModel
-    {
-        public string Id { get; set; } = null!;
-
+    {        
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;
@@ -34,6 +32,6 @@
 
         public int CategoryId { get; set; }
 
-        public IEnumerable<CategorySelectViewModel> Categories { get; set; } = null!;
+        public IEnumerable<CategorySelectViewModel>? Categories { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace JordyHandmade
     using JordyHandmade.Web.Infrastructure.Extensions;
     using Microsoft.AspNetCore.Identity;
     using JordyHandmade.Services.Data.Interfaces;
+    using JordyHandmade.Web.Infrastructure.ModelBinders;
 
     public class Program
     {
@@ -32,7 +33,12 @@ namespace JordyHandmade
 
             builder.Services.AddAppServices(typeof(IProductService));
             
-            builder.Services.AddControllersWithViews();
+            builder.Services
+                .AddControllersWithViews()
+                .AddMvcOptions(options => 
+                {
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                });
 
             WebApplication app = builder.Build();
                         
