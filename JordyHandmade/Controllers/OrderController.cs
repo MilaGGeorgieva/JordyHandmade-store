@@ -48,7 +48,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> BuyProduct(OrderFormModel orderModel) 
+        public async Task<IActionResult> BuyProduct(string id, OrderFormModel orderModel) 
         {
             if (!ModelState.IsValid)
             {
@@ -56,7 +56,7 @@
                 return View(orderModel);
             }
 
-            int quantityAvailable = await this.productService.GetQuantityInStockByIdAsync(orderModel.ProductToBuy.Id);
+            int quantityAvailable = await this.productService.GetQuantityInStockByIdAsync(id);
 
             if (orderModel.Quantity > quantityAvailable)
             {
@@ -68,7 +68,7 @@
 
             try
             {
-                await this.orderService.AddToOrderAsync(currentUserId, orderModel);
+                await this.orderService.AddToOrderAsync(currentUserId, id, orderModel);
             }
             catch (Exception)
             {
@@ -83,7 +83,7 @@
         {
             string currentUserId = this.User.GetUserId();
 
-            IEnumerable<OrderStatusViewModel> orderStatus = 
+            OrderStatusViewModel orderStatus = 
                 await this.orderService.GetOrderStatusAsync(currentUserId);
 
             return this.View(orderStatus);

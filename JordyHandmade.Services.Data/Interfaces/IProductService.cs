@@ -21,5 +21,9 @@ namespace JordyHandmade.Services.Data.Interfaces
         Task<int> GetQuantityInStockByIdAsync(string id);
 
         Task AddProductAsync(ProductFormModel formModel);
+
+        Task<ProductFormModel> GetProductToEditAsync(string id);
+
+        Task UpdateAsync(string id, ProductFormModel editModel);
     }
 }

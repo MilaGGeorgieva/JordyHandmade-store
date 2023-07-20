@@ -12,7 +12,7 @@ namespace JordyHandmade.Web.ViewModels.Order
 {
     public class OrderFormModel
     {
-        public DetailsViewModel ProductToBuy { get; set; } = null!;
+        public DetailsViewModel? ProductToBuy { get; set; }
 
         [Range(QuantityInStockMinValue, QuantityInStockMaxValue)]
         public int Quantity { get; set; }

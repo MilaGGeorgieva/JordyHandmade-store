@@ -9,8 +9,8 @@ namespace JordyHandmade.Services.Data.Interfaces
 {
     public interface IOrderService
     {
-        Task AddToOrderAsync(string customerId, OrderFormModel orderModel);
+        Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel);
 
-        Task<IEnumerable<OrderStatusViewModel>> GetOrderStatusAsync(string customerId); 
+        Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId); 
     }
 }

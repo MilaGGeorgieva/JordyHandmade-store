@@ -6,7 +6,8 @@
     using JordyHandmade.Data.Models;
     using JordyHandmade.Services.Data.Interfaces;
     using JordyHandmade.Web.ViewModels.Order;
-    using System.Collections.Generic;    
+    using System.Collections.Generic;
+    using JordyHandmade.Data.Models.Enums;
 
     public class OrderService : IOrderService
     {
@@ -17,10 +18,10 @@
             this.dbContext = dbContext;
         }
 
-        public async Task AddToOrderAsync(string customerId, OrderFormModel orderModel)
+        public async Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel)
         {
             bool orderExists = await this.dbContext
-                .Orders.AnyAsync(o => o.CustomerId.ToString() == customerId && o.Status.ToString() == "Collecting");
+                .Orders.AnyAsync(o => o.CustomerId.ToString() == customerId && o.Status == OrderStatus.Collecting);
             
             if (orderExists == false)
             {
@@ -39,18 +40,18 @@
 
             var orderCompiling = await this.dbContext
                 .Orders
-                .Where(o => o.CustomerId.ToString() == customerId && o.Status.ToString() == "Collecting")
+                .Where(o => o.CustomerId.ToString() == customerId && o.Status == OrderStatus.Collecting)
                 .FirstAsync();
 
             bool productWasAdded = await this.dbContext
-                .OrdersProducts.AnyAsync(op => op.OrderId == orderCompiling.Id && op.ProductId.ToString() == orderModel.ProductToBuy.Id);
+                .OrdersProducts.AnyAsync(op => op.OrderId == orderCompiling.Id && op.ProductId.ToString() == productId);
 
             if (productWasAdded == false)
             {
                 OrderProduct orderProduct = new OrderProduct()
                 {
                     OrderId = orderCompiling.Id,
-                    ProductId = Guid.Parse(orderModel.ProductToBuy.Id),
+                    ProductId = Guid.Parse(productId),
                     ProductQuantity = 0
                 };
 
@@ -60,28 +61,44 @@
 
             var orderProductCompiling = await this.dbContext
                 .OrdersProducts
-                .Where(op => op.OrderId == orderCompiling.Id && op.ProductId.ToString() == orderModel.ProductToBuy.Id)
+                .Where(op => op.OrderId == orderCompiling.Id && op.ProductId.ToString() == productId)
                 .FirstAsync();
 
             orderProductCompiling.ProductQuantity += orderModel.Quantity;
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<OrderStatusViewModel>> GetOrderStatusAsync(string customerId)
+        public async Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId)
         {
-            IEnumerable<OrderStatusViewModel> orderStatus = await this.dbContext
+            var orderedProducts = await this.dbContext
                 .OrdersProducts
                 .Where(op => op.Order.CustomerId.ToString() == customerId && op.Order.Status.ToString() == "Collecting")
-                .Select(op => new OrderStatusViewModel() 
+                .Select(op => new OrderedProductViewModel() 
                 {
+                    ProductId = op.ProductId.ToString(),
                     ProductName = op.Product.Name,
                     Price = op.Product.Price,
                     ProductQuantity = op.ProductQuantity,
-                    ProductTotal = op.Product.Price * op.ProductQuantity,
-                    OrderTotal = op.Order.OrderProducts.Sum(x => x.ProductQuantity * x.Product.Price)
+                    ProductTotal = op.Product.Price * op.ProductQuantity,                    
                 })
                 .ToArrayAsync();
 
+            var orderCompiling = await this.dbContext
+                .Orders
+                .Where(o => o.CustomerId.ToString() == customerId && o.Status.ToString() == "Collecting")
+                .FirstAsync();
+
+            var orderDate = orderCompiling.StartDate.ToString("yyyy-MM-dd H:mm");
+            var orderId = orderCompiling.Id.ToString();     
+            
+            OrderStatusViewModel orderStatus = new OrderStatusViewModel() 
+            {
+                OrderId = orderId,
+                OrderedProducts = orderedProducts,
+                OrderTotal = orderedProducts.Sum(x => x.ProductQuantity * x.Price),
+                StartDate = orderDate
+            };             
+            
             return orderStatus;
         }
     }

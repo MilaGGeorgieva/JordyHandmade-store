@@ -1,17 +1,13 @@
-﻿using JordyHandmade.Data;
-using JordyHandmade.Data.Models;
-using JordyHandmade.Services.Data.Interfaces;
-using JordyHandmade.Web.ViewModels.Home;
-using JordyHandmade.Web.ViewModels.Product;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JordyHandmade.Services.Data.Services
+﻿namespace JordyHandmade.Services.Data.Services
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using JordyHandmade.Data;
+    using JordyHandmade.Data.Models;
+    using JordyHandmade.Services.Data.Interfaces;
+    using JordyHandmade.Web.ViewModels.Home;
+    using JordyHandmade.Web.ViewModels.Product;    
+
     public class ProductService : IProductService
     {
         private readonly JordyHandmadeDbContext dbContext;
@@ -106,6 +102,28 @@ namespace JordyHandmade.Services.Data.Services
 
             await this.dbContext.AddAsync(product);
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ProductFormModel> GetProductToEditAsync(string id)
+        {
+            Product productToEdit = await this.dbContext
+                .Products.FirstAsync(p => p.Id.ToString() == id);
+
+            return new ProductFormModel()
+            {
+                Name = productToEdit.Name,
+                Description = productToEdit.Description,
+                ImageUrl = productToEdit.ImageUrl,
+                Price = productToEdit.Price,
+                CreatedOn = productToEdit.CreatedOn.ToString("yyyy-MM-dd H:mm"),
+                QuantityInStock = productToEdit.QuantityInStock,
+                CategoryId = productToEdit.CategoryId
+            };
+        }
+
+        public Task UpdateAsync(string id, ProductFormModel editModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

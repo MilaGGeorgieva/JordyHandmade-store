@@ -2,14 +2,12 @@
 {
     public class OrderStatusViewModel
     {
-        public string ProductName { get; set; } = null!;
+        public string OrderId { get; set; } = null!;
 
-        public decimal Price { get; set; }
-
-        public int ProductQuantity { get; set; }
-
-        public decimal ProductTotal { get; set; }
+        public IEnumerable<OrderedProductViewModel> OrderedProducts { get; set; } = null!;
 
         public decimal OrderTotal { get; set; }
+
+        public string StartDate { get; set; } = null!;
     }
 }

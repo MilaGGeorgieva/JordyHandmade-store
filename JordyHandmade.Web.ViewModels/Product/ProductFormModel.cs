@@ -24,7 +24,7 @@
 
         [Required]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd H:mm}", ApplyFormatInEditMode = true)]
         public string CreatedOn { get; set; } = null!;
 
         [Range(QuantityInStockMinValue, QuantityInStockMaxValue)]

@@ -1,10 +1,11 @@
-﻿using JordyHandmade.Services.Data.Interfaces;
-using JordyHandmade.Web.ViewModels.Product;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace JordyHandmade.Web.Controllers
+﻿namespace JordyHandmade.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using JordyHandmade.Services.Data.Interfaces;
+    using JordyHandmade.Web.ViewModels.Product;    
+
     [Authorize]
     public class ProductController : Controller
     {
@@ -88,5 +89,26 @@ namespace JordyHandmade.Web.Controllers
 
             return this.RedirectToAction("All");
         }
+
+        public async Task<IActionResult> Edit(string id) 
+        {
+            try
+            {
+                ProductFormModel editModel = await this.productService.GetProductToEditAsync(id);
+                editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+
+                return View(editModel);
+            }
+            catch (Exception)
+            {
+                return BadRequest();                
+            }
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(string id, ProductFormModel editModel) 
+        //{
+        
+        //}
     }
 }
