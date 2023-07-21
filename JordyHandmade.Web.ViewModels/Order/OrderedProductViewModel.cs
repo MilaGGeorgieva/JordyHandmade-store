@@ -1,5 +1,7 @@
 ﻿namespace JordyHandmade.Web.ViewModels.Order
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class OrderedProductViewModel
     {
         public string ProductId { get; set; } = null!;
@@ -10,6 +12,7 @@
 
         public int ProductQuantity { get; set; }
 
+        //[DisplayFormat(DataFormatString = "{0:f2}")]
         public decimal ProductTotal { get; set; }        
     }
 }

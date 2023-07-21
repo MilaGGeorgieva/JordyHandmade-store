@@ -7,6 +7,9 @@
     public class CustomerFormModel
     {
         [Required]
+        public string Name { get; set; } = null!;
+
+        [Required]
         [StringLength(StreetAddressMaxLength, MinimumLength = StreetAddressMinLength)]
         public string StreetAddress { get; set; } = null!;
 

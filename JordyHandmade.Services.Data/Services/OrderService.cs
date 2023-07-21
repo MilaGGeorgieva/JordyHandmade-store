@@ -72,7 +72,7 @@
         {
             var orderedProducts = await this.dbContext
                 .OrdersProducts
-                .Where(op => op.Order.CustomerId.ToString() == customerId && op.Order.Status.ToString() == "Collecting")
+                .Where(op => op.Order.CustomerId.ToString() == customerId && op.Order.Status == OrderStatus.Collecting)
                 .Select(op => new OrderedProductViewModel() 
                 {
                     ProductId = op.ProductId.ToString(),
@@ -85,7 +85,7 @@
 
             var orderCompiling = await this.dbContext
                 .Orders
-                .Where(o => o.CustomerId.ToString() == customerId && o.Status.ToString() == "Collecting")
+                .Where(o => o.CustomerId.ToString() == customerId && o.Status == OrderStatus.Collecting)
                 .FirstAsync();
 
             var orderDate = orderCompiling.StartDate.ToString("yyyy-MM-dd H:mm");
