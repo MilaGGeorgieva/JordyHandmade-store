@@ -1,4 +1,5 @@
-﻿using JordyHandmade.Web.ViewModels.Order;
+﻿using JordyHandmade.Web.ViewModels.Customer;
+using JordyHandmade.Web.ViewModels.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,11 @@ namespace JordyHandmade.Services.Data.Interfaces
 {
     public interface IOrderService
     {
+        Task<bool> OrderExistsByIdAsync(string id);
+
         Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel);
 
-        Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId); 
+        Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId);
+        
     }
 }

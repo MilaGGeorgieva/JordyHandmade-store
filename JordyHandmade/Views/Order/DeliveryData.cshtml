@@ -1,0 +1,63 @@
+﻿@model CustomerFormModel
+
+@{
+	ViewData["Title"] = "Finalize order";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+
+<h5 class="text-center">Please confirm your personal data below for delivery purposes. If necessary correct your information</h5>
+<div>
+	<p>Delivery will be done through courier services (we use Speedy or Econt) within 3 to 5 business days after you submit your order. 
+		This will incur additional cost of ... lv to your order. We use Speedy or Econt cash on delivery services - for detailed information on 
+		delivery and payment terms use the link here: </p>
+	<a asp-controller="Order" asp-action="DeliveryTerms" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Information about delivery and payment</a>
+</div>
+<div class="row">
+	<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+		<form asp-action="DeliveryData">
+			<div class="mb-3">
+				<label asp-for="Name" class="form-label">First and Last names</label>
+				<input asp-for="Name" class="form-control" aria-required="true" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="StreetAddress" class="form-label">Street address</label>
+				<input asp-for="StreetAddress" class="form-control" aria-required="true" />
+				<span asp-validation-for="StreetAddress" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="TownName" class="form-label">Town</label>
+				<input asp-for="TownName" class="form-control" aria-required="true" />
+				<span asp-validation-for="TownName" class="text-danger"></span>
+			</div>	
+			<div class="mb-3">
+				<label asp-for="ZipCode" class="form-label">Zip code</label>
+				<input asp-for="ZipCode" class="form-control" aria-required="true" />
+				<span asp-validation-for="ZipCode" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="PhoneNumber" class="form-label">Phone number</label>
+				<input asp-for="PhoneNumber" class="form-control" aria-required="true" />
+				<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="Email" class="form-label">Email address</label>
+				<input asp-for="Email" class="form-control" aria-required="true" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<input class="btn btn-primary" type="submit" value="Submit delivery information" />
+			</div>
+		</form>
+		<p>After you submit order data from this page your order will be sent to JordyHandmade for processing. 
+			You will be able to see order status and details one more time and
+			will be prompted to make changes if you forgot something. Shop with smile...</p>
+	</div>
+</div>
+
+@section Scripts {
+		<partial name="_ValidationScriptsPartial" />
+}

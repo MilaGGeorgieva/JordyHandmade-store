@@ -6,17 +6,20 @@
     using JordyHandmade.Web.Infrastructure.Extensions;
     using JordyHandmade.Services.Data.Interfaces;
     using JordyHandmade.Web.ViewModels.Order;
+    using JordyHandmade.Web.ViewModels.Customer;
 
     [Authorize]
     public class OrderController : Controller
     {
         private readonly IProductService productService;
         private readonly IOrderService orderService;
+        private readonly ICustomerService customerService;
 
-        public OrderController(IProductService productService, IOrderService orderService)
+        public OrderController(IProductService productService, IOrderService orderService, ICustomerService customerService)
         {
             this.productService = productService;
             this.orderService = orderService;
+            this.customerService = customerService;
         }
         
         public async Task<IActionResult> BuyProduct(string id)
@@ -87,6 +90,84 @@
                 await this.orderService.GetOrderStatusAsync(currentUserId);
 
             return this.View(orderStatus);
+        }
+
+        public async Task<IActionResult> DeliveryData(string id) 
+        {
+            bool orderCompilingExists = await this.orderService.OrderExistsByIdAsync(id);
+
+            if (!orderCompilingExists) 
+            {
+                return this.RedirectToAction("OrderStatus");
+            }
+
+            string currentUserId = this.User.GetUserId();
+
+            try
+            {
+                CustomerFormModel deliveryModel = await this.customerService.GetCustomerToEditAsync(currentUserId);
+                return View(deliveryModel);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> DeliveryData(string id, CustomerFormModel deliveryModel) 
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(deliveryModel);
+            }
+            
+            string currentUserId = this.User.GetUserId();
+
+            try
+            {
+                await this.customerService.AddCustomerDataAsync(currentUserId, deliveryModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while adding your delivery information!");
+                return this.View(deliveryModel);
+            }
+
+            return this.RedirectToAction("Finalize", new { Id = id });
+		}
+
+        public async Task<IActionResult> Finalize(string id) 
+        {
+			bool orderCompilingExists = await this.orderService.OrderExistsByIdAsync(id);
+
+			if (!orderCompilingExists)
+			{
+				return this.RedirectToAction("OrderStatus");
+			}
+
+			string currentUserId = this.User.GetUserId();
+
+            try
+            {
+				OrderFinalizeViewModel finalModel = new OrderFinalizeViewModel()
+				{
+					OrderData = await this.orderService.GetOrderStatusAsync(currentUserId),
+					CustomerData = await this.customerService.GetCustomerToEditAsync(currentUserId)
+				};
+
+                return this.View(finalModel);
+			}
+            catch (Exception)
+            {
+                return BadRequest();
+            }           
+		}
+
+        [HttpPost]
+        public async Task<IActionResult> Finalize(string id, OrderFinalizeViewModel finalizeModel) 
+        {
+        
         }
     }
 }

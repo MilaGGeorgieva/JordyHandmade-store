@@ -8,6 +8,7 @@
     using JordyHandmade.Web.ViewModels.Order;
     using System.Collections.Generic;
     using JordyHandmade.Data.Models.Enums;
+    using JordyHandmade.Web.ViewModels.Customer;
 
     public class OrderService : IOrderService
     {
@@ -16,7 +17,7 @@
         public OrderService(JordyHandmadeDbContext dbContext)
         {
             this.dbContext = dbContext;
-        }
+        }        
 
         public async Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel)
         {
@@ -101,5 +102,18 @@
             
             return orderStatus;
         }
+
+        public async Task<bool> OrderExistsByIdAsync(string id)
+        {
+            bool result = await this.dbContext
+                .Orders
+                .AnyAsync(o => o.Id.ToString() == id);
+
+            return result;
+        }
+
+        
+
+        
     }
 }

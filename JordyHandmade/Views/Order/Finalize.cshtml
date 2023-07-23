@@ -1,0 +1,35 @@
+﻿@model OrderFinalizeViewModel
+
+@{
+    ViewData["Title"] = "Finalize order";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_OrderStatusPartial" model="@Model" />
+
+<h5 class="text-center">Your order will be delivered to the following address:</h5>
+
+<div class="card col-4" style="width: 20rem; ">            
+    <div class="card-body">
+        <h5 class="card-title mt-1">Delivery data</h5>
+            <p class="mb-0">Name: @Model.CustomerData.Name</p>
+            <p class="mb-0">Address: @Model.CustomerData.StreetAddress</p>
+            <p class="mb-0">Town: @Model.CustomerData.TownName @Model.CustomerData.ZipCode></p>
+            <p class="mb-0">Telephone for contact: @Model.CustomerData.PhoneNumber></p>
+            <p class="mb-0">Email for contact: @Model.CustomerData.Email></p>
+    </div>
+    <div class="mb-3">
+        <form asp-controller="Order" asp-action="Finalize">
+            <input class="btn btn-primary" type="submit" value="Submit order" />
+        </form>        
+    </div>
+</div>
+ <p> If you would like to make final changes to your order, delivery data or you decide to cancel your order now - please use the links below</p>   
+ <div class="text-center row">    
+    <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderData.OrderId" class="btn btn-warning">Edit your order</a>
+    <a asp-controller="Order" asp-action="DeliveryData" asp-route-id="@Model.OrderData.OrderId" class="btn btn-success">Go to delivery page</a>
+    <a asp-controller="Order" asp-action="DeleteOrder" asp-route-id="@Model.OrderData.OrderId" class="btn btn-success">Cancel order</a>
+ </div> 
+ <a asp-controller="Order" asp-action="DeliveryTerms" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Information about delivery and payment</a>

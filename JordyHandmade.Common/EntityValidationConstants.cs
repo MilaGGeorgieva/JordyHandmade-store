@@ -96,8 +96,18 @@
 
         public static class Customer 
         {
+            public const int CustomerNameMinLength = 6;
+            public const int CustomerNameMaxLength = 70;
+            
             public const int CustomerRatingMin = 1;
             public const int CustomerRatingMax = 3;
+
+            public const int EmailAddressMinLength = 10;
+            public const int EmailAddressMaxLength = 50;
+            public const string EmailAddressRegEx = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
+
+            public const int PhoneNumberMinLength = 7;
+            public const int PhoneNumberMaxLength = 15;
         }
     }
 }
