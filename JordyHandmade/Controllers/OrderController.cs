@@ -82,6 +82,14 @@
             return RedirectToAction("OrderStatus");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RemoveProduct(string id) 
+        {
+            string currentUserId = this.User.GetUserId();
+
+            string orderCompilingId = await this.orderService.GetOrderCompilingId(currentUserId);
+        }
+        
         public async Task<IActionResult> OrderStatus() 
         {
             string currentUserId = this.User.GetUserId();
@@ -167,7 +175,22 @@
         [HttpPost]
         public async Task<IActionResult> Finalize(string id, OrderFinalizeViewModel finalizeModel) 
         {
-        
+            if (!ModelState.IsValid)
+            {
+                return this.View(finalizeModel);
+            }
+
+            try
+            {
+                await this.orderService.FinalizeOrderAsync(id, finalizeModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while finalizing your order! Please try again or contact administrator");
+                return this.View(finalizeModel);                
+            }
+            
+            return this.RedirectToAction("ConfirmationPage");
         }
     }
 }

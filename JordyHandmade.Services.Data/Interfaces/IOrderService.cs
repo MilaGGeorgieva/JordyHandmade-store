@@ -12,9 +12,14 @@ namespace JordyHandmade.Services.Data.Interfaces
     {
         Task<bool> OrderExistsByIdAsync(string id);
 
+        Task<string> GetOrderCompilingId(string customerId);
+
         Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel);
 
+        Task RemoveFromOrderAsync(string productId, string orderCompilingId);
+
         Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId);
-        
+
+        Task FinalizeOrderAsync(string orderId, OrderFinalizeViewModel finalModel);        
     }
 }

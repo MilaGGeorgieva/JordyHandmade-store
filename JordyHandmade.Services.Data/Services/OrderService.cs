@@ -9,6 +9,7 @@
     using System.Collections.Generic;
     using JordyHandmade.Data.Models.Enums;
     using JordyHandmade.Web.ViewModels.Customer;
+    using System.Net.WebSockets;    
 
     public class OrderService : IOrderService
     {
@@ -67,7 +68,7 @@
 
             orderProductCompiling.ProductQuantity += orderModel.Quantity;
             await dbContext.SaveChangesAsync();
-        }
+        }        
 
         public async Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId)
         {
@@ -112,8 +113,48 @@
             return result;
         }
 
-        
+        public async Task FinalizeOrderAsync(string orderId, OrderFinalizeViewModel finalModel)
+        {
+            Order orderFinalized = await this.dbContext
+                .Orders
+                .Where(o => o.Id.ToString() == orderId)
+                .FirstAsync();
 
-        
+            orderFinalized.Status = OrderStatus.ToBeSent;
+            orderFinalized.TotalAmount = finalModel.OrderData!.OrderTotal;
+
+            foreach (var product in orderFinalized.OrderProducts)
+            {
+                var orderedQty = finalModel.OrderData
+                    .OrderedProducts
+                    .Where(op => op.ProductId == product.ProductId.ToString())
+                    .Select(op => op.ProductQuantity)
+                    .First();
+
+                product.Product.QuantityInStock -= orderedQty;  
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveFromOrderAsync(string productId, string orderCompilingId)
+        {
+            var productToRemove = await this.dbContext
+                .OrdersProducts
+                .FirstAsync(op => op.OrderId.ToString() == orderCompilingId && op.ProductId.ToString() == productId);
+
+            dbContext.OrdersProducts.Remove(productToRemove);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<string> GetOrderCompilingId(string customerId)
+        {
+            var orderCompiling = await this.dbContext
+                .Orders
+                .Where(o => o.CustomerId.ToString() == customerId && o.Status == OrderStatus.Collecting)
+                .FirstAsync();
+
+            return orderCompiling.Id.ToString();
+        }
     }
 }
