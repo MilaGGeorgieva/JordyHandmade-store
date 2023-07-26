@@ -5,7 +5,8 @@
     using JordyHandmade.Services.Data.Interfaces;
     using JordyHandmade.Web.ViewModels.Customer;
     using Microsoft.EntityFrameworkCore;
-    using System.Threading.Tasks;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;    
 
     public class CustomerService : ICustomerService
     {
@@ -19,7 +20,10 @@
 		public async Task<CustomerFormModel> GetCustomerToEditAsync(string customerId)
         {
             Customer customerToEdit = await this.dbContext
-                .Customers.FirstAsync(c => c.Id.ToString() == customerId);
+                .Customers
+                .Include(c => c.Address)
+                .ThenInclude(a => a.Town)
+                .FirstAsync(c => c.Id.ToString() == customerId);
 
             return new CustomerFormModel()
             {
@@ -36,11 +40,9 @@
 		{
             Customer customerToEdit = await this.dbContext
                 .Customers.FirstAsync(c => c.Id.ToString() == customerId);
-                       
-            bool addressExists = await this.dbContext
-                .Addresses.AnyAsync(a => a.Customers.Any(c => c.Id.ToString() == customerId));
+                                   
             bool townExists = await this.dbContext
-                .Towns.AnyAsync(t => t.Addresses.Any(a => a.Customers.Any(c => c.Id.ToString() == customerId)));
+                .Towns.AnyAsync(t => t.ZipCode == customerModel.ZipCode);   
 
             if (!townExists)
             {
@@ -56,28 +58,60 @@
 
             var customerTown = await this.dbContext
                 .Towns
-                .Where(t => t.Addresses.Any(a => a.Customers.Any(c => c.Id.ToString() == customerId)))
+                .Where(t => t.ZipCode == customerModel.ZipCode)
                 .FirstAsync();
-            
-            if (!addressExists)
-            {
-                Address address = new Address()
-                {
-                    StreetAddress = customerModel.StreetAddress,
-                    TownId = customerTown.Id                    
-                };
 
-                await dbContext.Addresses.AddAsync(address);
-                await dbContext.SaveChangesAsync();
-            }
-            
-            var customerAddress = await this.dbContext
-                .Addresses
-                .Where(a => a.Customers.Any(c => c.Id.ToString() == customerId))
-                .FirstAsync();
+			bool customerAddressExists = await this.dbContext
+				.Addresses.AnyAsync(a => a.Customers.Any(c => c.Id.ToString() == customerId));
+
+			string enteredAddressNormalized = Regex.Replace(customerModel.StreetAddress, @"\s", "").ToLower();
+			
+            var addresses = await this.dbContext
+			                .Addresses
+			                .Where(a => a.Town.ZipCode == customerModel.ZipCode)
+			                .ToArrayAsync();
+
+            if (!customerAddressExists)
+            {
+                bool addressExists = false;
+
+                foreach (var address in addresses)
+				{
+					string dbAddressNormalized = Regex.Replace(address.StreetAddress, @"\s", "").ToLower();
+
+					if (dbAddressNormalized == enteredAddressNormalized)
+					{
+                        customerToEdit.AddressId = address.Id;
+                        addressExists = true;
+						break;
+					}
+				}
+
+                if (addressExists == false)
+                {
+					Address newAddress = new Address()
+					{
+						StreetAddress = customerModel.StreetAddress,
+						TownId = customerTown.Id,
+						Customers = new HashSet<Customer>()
+					    {
+						    customerToEdit
+					    }
+					};
+
+					await dbContext.Addresses.AddAsync(newAddress);
+				}
+				                				
+				await dbContext.SaveChangesAsync();
+			}
+                       
+            //var customerAddress = await this.dbContext
+            //    .Addresses
+            //    .Where(a => a.Customers.Any(c => c.Id.ToString() == customerId))
+            //    .FirstAsync();
 
             customerToEdit.CustomerName = customerModel.Name;
-            customerToEdit.AddressId = customerAddress.Id;            
+            //customerToEdit.AddressId = customerAddress.Id;            
             customerToEdit.PhoneNumber = customerModel.PhoneNumber;
             customerToEdit.Email = customerModel.Email;
 

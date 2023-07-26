@@ -88,6 +88,10 @@
             string currentUserId = this.User.GetUserId();
 
             string orderCompilingId = await this.orderService.GetOrderCompilingId(currentUserId);
+
+            await this.orderService.RemoveFromOrderAsync(id, orderCompilingId);
+
+            return this.RedirectToAction("OrderStatus");
         }
         
         public async Task<IActionResult> OrderStatus() 
@@ -191,6 +195,16 @@
             }
             
             return this.RedirectToAction("ConfirmationPage");
+        }
+
+        public async Task<IActionResult> Mine() 
+        {
+            string currentUserId = this.User.GetUserId();
+
+            IEnumerable<MyOrdersViewModel> myOrders = 
+                await this.orderService.GetMyOrdersAsync(currentUserId);
+
+            return View(myOrders);
         }
     }
 }

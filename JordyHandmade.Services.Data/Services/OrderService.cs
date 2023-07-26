@@ -156,5 +156,23 @@
 
             return orderCompiling.Id.ToString();
         }
+
+        public async Task<IEnumerable<MyOrdersViewModel>> GetMyOrdersAsync(string customerId)
+        {
+            IEnumerable<MyOrdersViewModel> myOrders = await this.dbContext
+                .Orders
+                .Where(o => o.CustomerId.ToString() == customerId)
+                .Select(o => new MyOrdersViewModel()
+                {
+                    Id = o.Id.ToString(),
+                    StartDate = o.StartDate.ToString("yyyy-MM-dd H:mm"),
+                    Status = o.Status.ToString(),
+                    Discount = o.Discount,
+                    TotalAmount = o.TotalAmount
+                })
+                .ToArrayAsync();
+
+            return myOrders;
+        }
     }
 }
