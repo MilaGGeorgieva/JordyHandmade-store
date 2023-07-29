@@ -113,24 +113,23 @@
             return result;
         }
 
-        public async Task FinalizeOrderAsync(string orderId, OrderFinalizeViewModel finalModel)
+        public async Task FinalizeOrderAsync(string orderId)
         {
             Order orderFinalized = await this.dbContext
                 .Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
                 .Where(o => o.Id.ToString() == orderId)
                 .FirstAsync();
 
             orderFinalized.Status = OrderStatus.ToBeSent;
-            orderFinalized.TotalAmount = finalModel.OrderData!.OrderTotal;
+            orderFinalized.TotalAmount = orderFinalized.OrderProducts.Sum(x => x.ProductQuantity * x.Product.Price);
+            
 
             foreach (var product in orderFinalized.OrderProducts)
             {
-                var orderedQty = finalModel.OrderData
-                    .OrderedProducts
-                    .Where(op => op.ProductId == product.ProductId.ToString())
-                    .Select(op => op.ProductQuantity)
-                    .First();
-
+                var orderedQty = product.ProductQuantity;                                              
+                
                 product.Product.QuantityInStock -= orderedQty;  
             }
 
@@ -174,5 +173,20 @@
 
             return myOrders;
         }
-    }
+
+		public async Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId)
+		{			
+			OrderConfirmationViewModel confirmationInfo = await this.dbContext
+                .Orders              
+                .Select(o => new OrderConfirmationViewModel() 
+                {
+                    OrderId = o.Id.ToString(),
+                    OrderTotal = o.TotalAmount,
+                    StartDate = o.StartDate.ToString("yyyy-MM-dd H:mm")
+                })
+                .FirstAsync(o => o.OrderId == orderId);
+
+            return confirmationInfo; 
+		}
+	}
 }

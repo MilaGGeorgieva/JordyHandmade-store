@@ -177,24 +177,27 @@
 		}
 
         [HttpPost]
-        public async Task<IActionResult> Finalize(string id, OrderFinalizeViewModel finalizeModel) 
+        public async Task<IActionResult> Finalized(string id) 
+        {                        
+            await this.orderService.FinalizeOrderAsync(id);
+            
+            //ModelState.AddModelError(string.Empty, "Unexpected error occurred while finalizing your order! Please try again or contact administrator");
+                
+            
+            return this.RedirectToAction("ConfirmationPage", new { Id = id });
+        }
+
+        public async Task<IActionResult> ConfirmationPage(string id) 
         {
-            if (!ModelState.IsValid)
+            bool orderexists = await this.orderService.OrderExistsByIdAsync(id);
+
+            if (!orderexists) 
             {
-                return this.View(finalizeModel);
+                return this.RedirectToAction("Finalize");
             }
 
-            try
-            {
-                await this.orderService.FinalizeOrderAsync(id, finalizeModel);
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, "Unexpected error occurred while finalizing your order! Please try again or contact administrator");
-                return this.View(finalizeModel);                
-            }
-            
-            return this.RedirectToAction("ConfirmationPage");
+            OrderConfirmationViewModel confirmaionModel = await this.orderService.GetConfirmationInfoAsync(id);
+            return View(confirmaionModel);
         }
 
         public async Task<IActionResult> Mine() 

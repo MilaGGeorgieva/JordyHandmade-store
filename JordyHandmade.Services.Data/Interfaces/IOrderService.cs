@@ -20,8 +20,10 @@ namespace JordyHandmade.Services.Data.Interfaces
 
         Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId);
 
-        Task FinalizeOrderAsync(string orderId, OrderFinalizeViewModel finalModel);
+        Task FinalizeOrderAsync(string orderId);
 
         Task<IEnumerable<MyOrdersViewModel>> GetMyOrdersAsync(string customerId);
+
+        Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId);
     }
 }

@@ -1,0 +1,25 @@
+﻿@model OrderConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Order confirmation";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<h1 class="text-center">Your order dated @Model.StartDate has been succesfully submitted. The total amount of your purchase is @Model.OrderTotal</h1>
+
+<h4 class="text-center">Thank you for shopping with us</h4>
+
+<h1 class="text-center">Your order number is: @Model.OrderId Keep it safe for future reference</h1>
+
+<p>Your products will be sent to you within 48 h. If you have any concerns you can get in tuch with us at ... </p>
+
+<p>If you are happy with our products and you will continue shopping in our store please join our list of discounts - we have a client card for you</p>
+<a asp-controller="ClientCard" asp-action="Create" class="btn btn-success">Card registration page</a>
+
+<p>You can keep trace of all your orders at your <a asp-controller="Order" asp-action="Mine">My orders page</a></p>
+
+
+<p>If it happens you are not happy with our products you can have a look at our return policy options below: </p>
+<a asp-controller="Order" asp-action="ReturnPolicy">Return policy</a>
