@@ -28,13 +28,35 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> TownExistsByZipAsync(string zipCode)
+		public async Task DeleteAsync(int id)
+		{
+			Town townToDelete = await this.dbContext
+				.Towns.FirstAsync(t => t.Id == id);
+
+            dbContext.Towns.Remove(townToDelete);
+            await dbContext.SaveChangesAsync();
+		}		
+
+		public async Task<bool> TownExistsByZipAsync(string zipCode)
         {
             bool result = await this.dbContext
                 .Towns.AnyAsync(t => t.ZipCode == zipCode);
 
             return result;
         }
-    }
+
+		public async Task<TownFormModel> GetTownByIdAsync(int id)
+		{
+			Town town = await this.dbContext
+                .Towns.FirstAsync(t => t.Id == id);
+
+            return new TownFormModel()
+            {
+                Id = town.Id,
+                TownName = town.TownName,
+                ZipCode = town.ZipCode,
+            };
+		}
+	}
     
 }

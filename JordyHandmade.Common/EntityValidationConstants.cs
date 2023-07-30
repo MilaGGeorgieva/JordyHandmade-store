@@ -77,7 +77,8 @@
             public const int NameMinLength = 4;
             public const int NameMaxLength = 50;
 
-            public const int ZipLength = 4;            
+            public const int ZipLength = 4;
+            public const string ZipRegEx = @"^[0-9]*$";
         }
         
         public static class Order 

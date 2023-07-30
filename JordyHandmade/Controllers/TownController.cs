@@ -35,6 +35,7 @@
             if (townExists)
             {
                 ModelState.AddModelError(nameof(inputModel.ZipCode), "A town with this Zip code already exists! ");
+                return this.View(inputModel);
             }
 
             try
@@ -49,5 +50,36 @@
             return this.RedirectToAction("Index", "Home");
             //return this.RedirectToAction("AdminPage", "Admin");
         }
-    }
+
+        public async Task<IActionResult> Delete(int id) 
+        {
+            try
+            {
+                TownFormModel formModel = await this.townService.GetTownByIdAsync(id);
+                return this.View(formModel);
+            }
+            catch (Exception)
+            {
+				return this.RedirectToAction("Index", "Home");
+				//return this.RedirectToAction("AdminPage", "Admin");				
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, TownFormModel formModel) 
+        {
+            try
+            {
+                await this.townService.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while deleting this town!");
+                return this.View(formModel);
+            }
+
+            return this.RedirectToAction("Index", "Home");
+			//return this.RedirectToAction("AdminPage", "Admin");
+		}
+	}
 }

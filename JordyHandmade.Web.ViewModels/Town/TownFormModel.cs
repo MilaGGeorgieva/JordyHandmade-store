@@ -13,6 +13,7 @@
 
         [Required]
         [StringLength(ZipLength, MinimumLength = ZipLength)]
+        [RegularExpression(ZipRegEx)]
         public string ZipCode { get; set; } = null!;
     }
 }

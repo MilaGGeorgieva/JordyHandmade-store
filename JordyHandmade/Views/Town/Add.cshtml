@@ -1,0 +1,39 @@
+﻿@model TownFormModel
+
+@{
+    ViewData["Title"] = "Add town";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<div class="row">
+    <div class="card w-100">        
+        <div class="card-body">
+            <h3 class="card-title text-center">Please enter city name and zip code</h3>            
+            <form asp-controller="Town" asp-action="Add">
+                <div class="mb-3">
+                    <label asp-for="TownName" class="form-label">Town name</label>
+                    <input asp-for="TownName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="TownName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ZipCode" class="form-label">Zip code</label>
+                    <input asp-for="ZipCode" class="form-control" aria-required="true" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-primary" type="submit" value="Add" />
+                </div>
+            </form>
+
+        </div>
+
+        <a asp-controller="Admin" asp-action="AdminPage" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to Admin Page</a>
+
+    </div>
+</div> 
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
