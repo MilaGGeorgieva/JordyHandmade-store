@@ -11,6 +11,8 @@
     {
         Task<CustomerFormModel> GetCustomerToEditAsync(string customerId);
 
+        Task<string?> GetCustomerNameAsync(string customerId);
+
         Task AddCustomerDataAsync(string customerId, CustomerFormModel customerModel);
     }
 }

@@ -7,5 +7,7 @@
         Task<bool> ExistsByIdAsync(int id);
 
         Task<IEnumerable<CategorySelectViewModel>> GetAllCategoriesAsync();
+
+        Task AddCategoryAsync(CategoryFormModel inputModel);
     }
 }

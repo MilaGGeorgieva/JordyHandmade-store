@@ -117,5 +117,17 @@
 
             await dbContext.SaveChangesAsync();
 		}
-	}
+
+        public async Task<string?> GetCustomerNameAsync(string customerId)
+        {
+            var customer = await this.dbContext.Users.FindAsync(customerId);
+
+            if (string.IsNullOrEmpty(customer?.CustomerName))
+            {
+                return null;
+            }
+
+            return customer.CustomerName;
+        }
+    }
 }

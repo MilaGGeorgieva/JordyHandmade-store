@@ -5,7 +5,7 @@
     using JordyHandmade.Data;
     using JordyHandmade.Services.Data.Interfaces;
     using JordyHandmade.Web.ViewModels.Category;
-    
+    using JordyHandmade.Data.Models;    
 
     public class CategoryService : ICategoryService
     {
@@ -14,9 +14,9 @@
         public CategoryService(JordyHandmadeDbContext dbContext)
         {
             this.dbContext = dbContext;
-        }
-        
-        public async Task<bool> ExistsByIdAsync(int id)
+        }		
+
+		public async Task<bool> ExistsByIdAsync(int id)
         {
             bool result = await this.dbContext
                 .Categories
@@ -39,5 +39,17 @@
 
             return allCategories;
         }
-    }
+
+		public async Task AddCategoryAsync(CategoryFormModel inputModel)
+		{
+			Category category = new Category() 
+            {
+                CategoryName = inputModel.CategoryName,
+                Description = inputModel.Description
+            };
+
+			await dbContext.Categories.AddAsync(category);
+			await dbContext.SaveChangesAsync();
+		}
+	}
 }

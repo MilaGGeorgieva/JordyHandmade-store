@@ -1,13 +1,14 @@
 namespace JordyHandmade
 {
-    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;       
+    using Microsoft.AspNetCore.Identity;
 
+    using JordyHandmade.Services.Data.Interfaces;
+    using JordyHandmade.Web.Infrastructure.ModelBinders;
     using JordyHandmade.Data;
     using JordyHandmade.Data.Models;
     using JordyHandmade.Web.Infrastructure.Extensions;
-    using Microsoft.AspNetCore.Identity;
-    using JordyHandmade.Services.Data.Interfaces;
-    using JordyHandmade.Web.Infrastructure.ModelBinders;
+    using static JordyHandmade.Common.GeneralApplicationConstants;
 
     public class Program
     {
@@ -29,6 +30,7 @@ namespace JordyHandmade
                 options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<JordyHandmadeDbContext>();
 
             builder.Services.AddAppServices(typeof(IProductService));
@@ -60,6 +62,8 @@ namespace JordyHandmade
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.SeedAdministrator(AdminEmail);
 
             app.MapDefaultControllerRoute();
 

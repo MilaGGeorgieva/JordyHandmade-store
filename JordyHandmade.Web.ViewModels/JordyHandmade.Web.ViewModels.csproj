@@ -10,4 +10,8 @@
     <ProjectReference Include="..\JordyHandmade.Common\JordyHandmade.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Supplier\" />
+  </ItemGroup>
+
 </Project>
