@@ -1,6 +1,7 @@
 ﻿namespace JordyHandmade.Web.Controllers
 {
     using JordyHandmade.Services.Data.Interfaces;
+    using JordyHandmade.Web.Infrastructure.Extensions;
     using JordyHandmade.Web.ViewModels.Town;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@
         }
         
         public IActionResult Add()
-        {
+        {            
             TownFormModel inputModel = new TownFormModel();
             
             return View(inputModel);
@@ -53,6 +54,11 @@
 
         public async Task<IActionResult> Delete(int id) 
         {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 TownFormModel formModel = await this.townService.GetTownByIdAsync(id);
@@ -68,6 +74,11 @@
         [HttpPost]
         public async Task<IActionResult> Delete(int id, TownFormModel formModel) 
         {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 await this.townService.DeleteAsync(id);

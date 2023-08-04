@@ -1,6 +1,7 @@
 ﻿namespace JordyHandmade.Web.Controllers
 {
 	using JordyHandmade.Services.Data.Interfaces;
+	using JordyHandmade.Web.Infrastructure.Extensions;
 	using JordyHandmade.Web.ViewModels.Category;
 	using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +16,24 @@
 		
 		public IActionResult Add()
 		{
-			CategoryFormModel inputModel = new CategoryFormModel();
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
+            CategoryFormModel inputModel = new CategoryFormModel();
 			return View(inputModel);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Add(CategoryFormModel inputModel) 
 		{
-			if (!ModelState.IsValid)
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
 			{
 				return View(inputModel);
 			}

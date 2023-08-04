@@ -4,7 +4,8 @@
     using Microsoft.AspNetCore.Mvc;
 
     using JordyHandmade.Services.Data.Interfaces;
-    using JordyHandmade.Web.ViewModels.Product;    
+    using JordyHandmade.Web.ViewModels.Product;
+    using JordyHandmade.Web.Infrastructure.Extensions;
 
     [Authorize]
     public class ProductController : Controller
@@ -43,6 +44,11 @@
 
         public async Task<IActionResult> Add() 
         {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+            
             ProductFormModel productForm = new ProductFormModel() 
             {
                 Categories = await this.categoryService.GetAllCategoriesAsync(),
@@ -58,9 +64,14 @@
 
             //if (productExists) 
             //{
-                
+
             //}
 
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+            
             bool categoryExists = await this.categoryService.ExistsByIdAsync(productForm.CategoryId);
 
             if (!categoryExists) 
@@ -92,6 +103,11 @@
 
         public async Task<IActionResult> Edit(string id) 
         {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 ProductFormModel editModel = await this.productService.GetProductToEditAsync(id);
