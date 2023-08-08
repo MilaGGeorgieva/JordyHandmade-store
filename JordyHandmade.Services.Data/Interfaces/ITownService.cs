@@ -4,11 +4,15 @@
 
     public interface ITownService
     {
-		Task<bool> TownExistsByZipAsync(string zipCode);
+		Task<IEnumerable<TownFormModel>> GetAllForSelectAsync();        
+        
+        Task<bool> TownExistsByZipAsync(string zipCode);
 
         Task<TownFormModel> GetTownByIdAsync(int id);
 
 		Task AddTownAsync(TownFormModel inputModel);
+
+        Task UpdateAsync(int id, TownFormModel editModel);
 
         Task DeleteAsync(int id);
 

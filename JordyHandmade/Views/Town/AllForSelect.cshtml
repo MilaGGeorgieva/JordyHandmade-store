@@ -1,0 +1,40 @@
+﻿@model TownSelectViewModel
+
+@{
+    ViewData["Title"] = "All towns";
+}
+
+<h2 class="text-center">@ViewData["Title"] for administration</h2>
+<hr />
+
+<div class="text-center">
+    <p>If you would like to add new town please use this section</p>
+</div>
+<div class="text-center">     
+    <a asp-area="" asp-controller="Town" asp-action="Add" class="btn btn-success mb-2 w-40 p-3 fw-bold">Add new town</a>      
+</div>
+
+<hr />
+
+<div class="text-center">
+    <p>If you would like to edit or delete existing town please select the town to be changed from the list below. 
+    Keep in mind that deleting a town will also delete all addresses associated with it.</p>
+</div>
+
+<div>
+    <form asp-action="AllForSelect" method="post">
+        <div class="mb-3">
+            <label asp-for="@Model.Id" class="form-label-add-edit">Select town</label>
+            <select asp-for="@Model.Id" class="form-control" aria-required="true">
+            @foreach (var town in Model.Towns!)
+            {                            
+                <option value="@town.Id">@town.TownName @town.ZipCode</option>
+            }
+            </select>
+            <span asp-validation-for="@Model.Id" class="text-danger"></span>
+        </div>      
+        <div class="mb-3">
+            <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Select" />
+        </div>        
+    </form>        
+</div>

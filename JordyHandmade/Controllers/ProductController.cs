@@ -1,4 +1,4 @@
-﻿namespace JordyHandmade.Web.Controllers
+﻿ namespace JordyHandmade.Web.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
