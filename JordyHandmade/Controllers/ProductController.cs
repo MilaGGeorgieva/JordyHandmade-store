@@ -6,6 +6,7 @@
     using JordyHandmade.Services.Data.Interfaces;
     using JordyHandmade.Web.ViewModels.Product;
     using JordyHandmade.Web.Infrastructure.Extensions;
+    using static JordyHandmade.Common.NotificationMessagesConstants;
 
     [Authorize]
     public class ProductController : Controller
@@ -30,6 +31,15 @@
 
         public async Task<IActionResult> Details(string id) 
         {
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+
+            if (!productExists) 
+            {
+                TempData[ErrorMessage] = "Product with the provided id does not exist!";
+
+                return RedirectToAction("All");
+            }
+
             try
             {
                 DetailsViewModel detailsView = await this.productService.GetDetailsAsync(id);
@@ -60,13 +70,6 @@
         [HttpPost]
         public async Task<IActionResult> Add(ProductFormModel productForm) 
         {
-            //bool productExists = await this.productService.ExistsByIdAsync(productForm.Id);
-
-            //if (productExists) 
-            //{
-
-            //}
-
             if (User.IsAdmin() == false)
             {
                 return Unauthorized();
@@ -108,6 +111,15 @@
                 return Unauthorized();
             }
 
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                TempData[ErrorMessage] = "Product with the provided id does not exist!";
+
+                return RedirectToAction("All");
+            }            
+
             try
             {
                 ProductFormModel editModel = await this.productService.GetProductToEditAsync(id);
@@ -121,10 +133,58 @@
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(string id, ProductFormModel editModel) 
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, ProductFormModel editModel)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+                return View(editModel);
+            }
+            
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                TempData[ErrorMessage] = "Product with the provided id does not exist and cannot be edited!";
+
+                return RedirectToAction("All");
+            }
+
+            bool categoryExists = await this.categoryService.ExistsByIdAsync(editModel.CategoryId);
+
+            if (!categoryExists)
+            {
+                ModelState.AddModelError(nameof(editModel.CategoryId), "Entered category does not exist!");                
+                editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+                return View(editModel);
+            }
+
+            try
+            {
+                await this.productService.UpdateAsync(id, editModel);                
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error ocurred while updating selected product. Please try again later!");
+                editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+                return View(editModel);
+            }
+
+            TempData[SuccessMessage] = "Selected product was edited successfully!";
+            return RedirectToAction("Details", new { id });
+        }
+
+        //public async Task<IActionResult> Delete(string id) 
         //{
         
         //}
+
+        //public async Task<IActionResult> Delete()
     }
 }

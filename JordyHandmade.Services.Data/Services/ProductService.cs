@@ -121,9 +121,20 @@
             };
         }
 
-        public Task UpdateAsync(string id, ProductFormModel editModel)
+        public async Task UpdateAsync(string id, ProductFormModel editModel)
         {
-            throw new NotImplementedException();
+            Product productToEdit = await this.dbContext
+                .Products.FirstAsync(p => p.Id.ToString() == id);
+
+            productToEdit.Name = editModel.Name;
+            productToEdit.Description = editModel.Description;
+            productToEdit.ImageUrl = editModel.ImageUrl;
+            productToEdit.Price = editModel.Price;
+            productToEdit.CreatedOn = DateTime.Parse(editModel.CreatedOn);
+            productToEdit.QuantityInStock = editModel.QuantityInStock;
+            productToEdit.CategoryId = editModel.CategoryId;
+
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }

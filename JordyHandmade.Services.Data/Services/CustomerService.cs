@@ -1,12 +1,14 @@
 ﻿namespace JordyHandmade.Services.Data.Services
 {
+    using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
+
     using JordyHandmade.Data;
     using JordyHandmade.Data.Models;
     using JordyHandmade.Services.Data.Interfaces;
-    using JordyHandmade.Web.ViewModels.Customer;
-    using Microsoft.EntityFrameworkCore;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;    
+    using JordyHandmade.Web.ViewModels.Customer;    
 
     public class CustomerService : ICustomerService
     {
@@ -15,9 +17,28 @@
         public CustomerService(JordyHandmadeDbContext dbContext)
         {
             this.dbContext = dbContext;
-        }		
+        }
 
-		public async Task<CustomerFormModel> GetCustomerToEditAsync(string customerId)
+        public async Task<IEnumerable<CustomerViewModel>> GetAllCustomersAsync()
+        {
+            IEnumerable<CustomerViewModel> allCustomers = await this.dbContext
+                .Customers
+                .Include(c => c.Address)
+                .ThenInclude(a => a.Town)
+                .Select(c => new CustomerViewModel() 
+                {
+                    Name = c.CustomerName!,
+                    PhoneNumber = c.PhoneNumber ?? string.Empty,
+                    Email = c.Email,
+                    TownName = c.Address.Town.TownName ?? string.Empty,
+                    CustomerRating = c.Rating.ToString()
+                })
+                .ToArrayAsync();
+
+            return allCustomers;
+        }
+
+        public async Task<CustomerFormModel> GetCustomerToEditAsync(string customerId)
         {
             Customer customerToEdit = await this.dbContext
                 .Customers
@@ -27,10 +48,10 @@
 
             return new CustomerFormModel()
             {
-                Name = customerToEdit.CustomerName,
-                StreetAddress = customerToEdit.Address?.StreetAddress,
-                TownName = customerToEdit.Address?.Town?.TownName,
-                ZipCode = customerToEdit.Address?.Town?.ZipCode,
+                Name = customerToEdit.CustomerName!,
+                StreetAddress = customerToEdit.Address?.StreetAddress ?? string.Empty,
+                TownName = customerToEdit.Address?.Town?.TownName ?? string.Empty,
+                ZipCode = customerToEdit.Address?.Town?.ZipCode ?? string.Empty,
                 PhoneNumber = customerToEdit.PhoneNumber,
                 Email = customerToEdit.Email
             };
@@ -128,6 +149,6 @@
             }
 
             return customer.CustomerName;
-        }
+        }        
     }
 }

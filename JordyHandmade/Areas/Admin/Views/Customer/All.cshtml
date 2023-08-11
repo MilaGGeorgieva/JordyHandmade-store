@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CustomerViewModel>
+
+@{
+	ViewData["Title"] = "All Customers";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<table class="table table-striped">
+	<thead>
+		<tr>			
+			<th><label>Customer Name</label></th>
+			<th><label>Phone Number</label></th>
+			<th><label>Email</label></th>
+			<th><label>Town</label></th>
+			<th><label>Customer Rating</label></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var customer in Model)
+		{
+			<tr>
+				<td><label>@customer.Name</label></td>
+				<td>
+					@if (customer.PhoneNumber != string.Empty)
+					{
+						<label>@customer.PhoneNumber</label>
+						@*<label>✔</label>*@
+					}
+					else
+					{
+						<label class="text-center">❌</label>
+					}
+				</td>				
+				<td><label>@customer.Email</label></td>
+				<td>
+					@if (customer.TownName != string.Empty)
+					{
+						<label>@customer.TownName</label>
+						@*<label>✔</label>*@
+					}
+					else
+					{
+						<label class="text-center">No address currently</label>
+					}
+				</td>
+				<td><label>@customer.CustomerRating</label></td>				
+			</tr>
+		}
+	</tbody>
+</table>
+

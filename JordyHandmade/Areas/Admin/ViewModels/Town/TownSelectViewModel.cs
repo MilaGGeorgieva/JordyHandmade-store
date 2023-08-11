@@ -1,5 +1,7 @@
-﻿namespace JordyHandmade.Web.ViewModels.Town
+﻿namespace JordyHandmade.Web.Areas.Admin.ViewModels.Town
 {
+    using JordyHandmade.Web.ViewModels.Town;
+
     public class TownSelectViewModel
     {
         public int Id { get; set; }

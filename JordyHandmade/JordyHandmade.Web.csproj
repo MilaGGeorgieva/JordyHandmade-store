@@ -28,8 +28,4 @@
     <ProjectReference Include="..\JordyHandmade.Web.ViewModels\JordyHandmade.Web.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Admin\ViewModels\" />
-  </ItemGroup>
-
 </Project>

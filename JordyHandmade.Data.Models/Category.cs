@@ -26,6 +26,8 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
+        public bool IsActive { get; set; }
+
         public virtual ICollection<Product> Products { get; set; }
     }
 }

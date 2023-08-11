@@ -45,6 +45,8 @@
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
+        public bool IsObsolete { get; set; }
+
         public virtual ICollection<ProductPart> ProductParts { get; set; }
 
         public virtual ICollection<OrderProduct> ProductOrders { get; set; }

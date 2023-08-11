@@ -44,7 +44,18 @@
             await dbContext.SaveChangesAsync();
         }
 
-		public async Task DeleteAsync(int id)
+        public async Task UpdateAsync(int id, TownFormModel editModel)
+        {
+            Town townToUpdate = await this.dbContext
+                .Towns.FirstAsync(t => t.Id == id);
+
+            townToUpdate.TownName = editModel.TownName;
+            townToUpdate.ZipCode = editModel.ZipCode;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
 		{
 			Town townToDelete = await this.dbContext
 				.Towns.FirstAsync(t => t.Id == id);
@@ -72,18 +83,7 @@
                 TownName = town.TownName,
                 ZipCode = town.ZipCode,
             };
-		}
-
-        public async Task UpdateAsync(int id, TownFormModel editModel)
-        {
-            Town townToUpdate = await this.dbContext
-                .Towns.FirstAsync(t => t.Id == id);
-
-            townToUpdate.TownName = editModel.TownName;
-            townToUpdate.ZipCode = editModel.ZipCode;
-
-            await this.dbContext.SaveChangesAsync();
-        }
+		}        
     }
     
 }

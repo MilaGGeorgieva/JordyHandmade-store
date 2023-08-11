@@ -40,6 +40,8 @@
         public Guid SupplierId { get; set; }
         public Supplier Supplier { get; set; } = null!;
 
+        public bool IsUsed { get; set; }
+
         public virtual ICollection<ProductPart> PartProducts { get; set; }
     }
 }

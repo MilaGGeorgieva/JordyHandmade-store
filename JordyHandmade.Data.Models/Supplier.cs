@@ -39,6 +39,8 @@
         public Guid AddressId { get; set; }
         public virtual Address Address { get; set; } = null!;
 
+        public bool IsActive { get; set; }
+
         public virtual ICollection<PartsInProduct> ProductParts { get; set; }
     }
 }
