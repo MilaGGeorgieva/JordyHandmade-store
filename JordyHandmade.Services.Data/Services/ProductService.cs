@@ -21,6 +21,7 @@
         {
             IEnumerable<IndexViewModel> lastThreeProducts = await this.dbContext
                 .Products
+                .Where(p => !p.IsObsolete)
                 .OrderByDescending(p => p.CreatedOn)
                 .Take(3)
                 .Select(p => new IndexViewModel()
@@ -37,7 +38,9 @@
         public async Task<IEnumerable<AllViewModel>> GetAllAsync()
         {
             IEnumerable<AllViewModel> allProducts = await this.dbContext
-                .Products.Select(p => new AllViewModel() 
+                .Products
+                .Where (p => !p.IsObsolete)
+                .Select(p => new AllViewModel() 
                 {
                     Id = p.Id.ToString(),
                     Name = p.Name,
@@ -133,6 +136,30 @@
             productToEdit.CreatedOn = DateTime.Parse(editModel.CreatedOn);
             productToEdit.QuantityInStock = editModel.QuantityInStock;
             productToEdit.CategoryId = editModel.CategoryId;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<AllViewModel> GetProductToDeleteAsync(string id)
+        {
+            Product productToDelete = await this.dbContext
+                .Products.FirstAsync(p => p.Id.ToString() == id);
+
+            return new AllViewModel()
+            {
+                Id = productToDelete.Id.ToString(),
+                Name = productToDelete.Name,
+                ImageUrl = productToDelete.ImageUrl,
+                Price = productToDelete.Price
+            };
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            Product productToDelete = await this.dbContext
+                .Products.FirstAsync(p => p.Id.ToString() == id);
+
+            productToDelete.IsObsolete = true;
 
             await this.dbContext.SaveChangesAsync();
         }

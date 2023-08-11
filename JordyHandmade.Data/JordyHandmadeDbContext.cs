@@ -38,11 +38,11 @@
                 e.HasKey(op => new { op.OrderId, op.ProductId });
             });
 
-            modelBuilder.Entity<PartsInProduct>()
+            modelBuilder.Entity<PartsInProduct>()                
                 .HasOne(pp => pp.Supplier)
                 .WithMany(s => s.ProductParts)
                 .HasForeignKey(pp => pp.SupplierId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict);            
 
             modelBuilder.Entity<ClientCard>()
                 .HasOne(cc => cc.Customer)

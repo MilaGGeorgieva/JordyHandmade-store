@@ -25,5 +25,9 @@ namespace JordyHandmade.Services.Data.Interfaces
         Task<ProductFormModel> GetProductToEditAsync(string id);
 
         Task UpdateAsync(string id, ProductFormModel editModel);
+
+        Task<AllViewModel> GetProductToDeleteAsync(string id);
+
+        Task DeleteAsync(string id);
     }
 }

@@ -23,6 +23,10 @@
                 .Property(p => p.CreatedOn)
                 .HasDefaultValue(DateTime.UtcNow);
 
+            builder
+                .Property(p => p.IsObsolete)
+                .HasDefaultValue(false);
+
             builder.HasData(this.GenerateProducts());
         }
 

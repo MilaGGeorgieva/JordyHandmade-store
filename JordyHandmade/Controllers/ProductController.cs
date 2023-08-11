@@ -180,11 +180,64 @@
             return RedirectToAction("Details", new { id });
         }
 
-        //public async Task<IActionResult> Delete(string id) 
-        //{
-        
-        //}
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
 
-        //public async Task<IActionResult> Delete()
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                TempData[ErrorMessage] = "Product with the provided id does not exist!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                AllViewModel viewModel = await this.productService.GetProductToDeleteAsync(id);
+
+                return View(viewModel);
+                
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Home");                
+            }            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id, AllViewModel viewModel) 
+        {
+            if (User.IsAdmin() == false)
+            {
+                return Unauthorized();
+            }
+
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                TempData[ErrorMessage] = "Product with the provided id does not exist!";
+
+                return RedirectToAction("All");
+            }
+
+            try
+            {
+                await this.productService.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while deleting selected product!");
+                return View(viewModel);                
+            }
+
+            TempData[SuccessMessage] = "Selected product was deleted successfully!";
+            return RedirectToAction("All");
+        }
     }
 }

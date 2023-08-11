@@ -9,8 +9,11 @@
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.HasData(this.GenerateCategories());
-                
+            builder
+                .Property(c => c.IsActive)
+                .HasDefaultValue(true);
+            
+            builder.HasData(this.GenerateCategories());                
         }
 
         private Category[] GenerateCategories()
