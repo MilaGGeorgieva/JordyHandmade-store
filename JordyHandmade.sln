@@ -19,9 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JordyHandmade.Web.ViewModel
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A14F18DF-9E7F-4093-9C23-A576833F0893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordyHandmade.Services.Data", "JordyHandmade.Services.Data\JordyHandmade.Services.Data.csproj", "{4D48A621-FD3A-4E24-93B3-9DD792930676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JordyHandmade.Services.Data", "JordyHandmade.Services.Data\JordyHandmade.Services.Data.csproj", "{4D48A621-FD3A-4E24-93B3-9DD792930676}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordyHandmade.Web.Infrastructure", "JordyHandmade.Web.Infrastructure\JordyHandmade.Web.Infrastructure.csproj", "{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JordyHandmade.Web.Infrastructure", "JordyHandmade.Web.Infrastructure\JordyHandmade.Web.Infrastructure.csproj", "{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4932B000-A598-4784-AA41-EE9405D83B5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JordyHandmade.Services.Tests", "JordyHandmade.Services.Tests\JordyHandmade.Services.Tests.csproj", "{959A6D16-6E1C-41CE-9CB3-C6CA17A09D73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,10 @@ Global
 		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{959A6D16-6E1C-41CE-9CB3-C6CA17A09D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{959A6D16-6E1C-41CE-9CB3-C6CA17A09D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{959A6D16-6E1C-41CE-9CB3-C6CA17A09D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{959A6D16-6E1C-41CE-9CB3-C6CA17A09D73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,7 @@ Global
 		{B29A5F2A-C76F-49C6-81D3-4C50458C1B5F} = {7DB4E217-C995-49AE-88DC-FFF5F59A1927}
 		{4D48A621-FD3A-4E24-93B3-9DD792930676} = {A14F18DF-9E7F-4093-9C23-A576833F0893}
 		{F46A1D21-7456-4945-8BC1-AC79BC6EBDFA} = {7DB4E217-C995-49AE-88DC-FFF5F59A1927}
+		{959A6D16-6E1C-41CE-9CB3-C6CA17A09D73} = {4932B000-A598-4784-AA41-EE9405D83B5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66CE1C9F-6A6D-43A9-981E-26774BF96E65}

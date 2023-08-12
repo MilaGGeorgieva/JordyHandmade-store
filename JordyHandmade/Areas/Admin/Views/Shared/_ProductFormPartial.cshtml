@@ -1,15 +1,8 @@
 ﻿@model ProductFormModel
 
-@{
-	ViewData["Title"] = "Add new product";
-}
-
-<h2 class="text-center">@ViewData["Title"]</h2>
-<hr />
-
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Add" method="post">
+        <form method="post">
             <div class="mb-3">
                 <label asp-for="@Model.Name" class="form-label-add-edit">Name</label>
                 <input asp-for="@Model.Name" class="form-control" aria-required="true" />
@@ -34,7 +27,7 @@
                 <label asp-for="@Model.CreatedOn" class="form-label-add-edit">Created on</label>
                 <input asp-for="@Model.CreatedOn" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.CreatedOn" class="text-danger"></span>
-            </div>  
+            </div>
             <div class="mb-3">
                 <label asp-for="@Model.QuantityInStock" class="form-label">Quantity in stock</label>
                 <input asp-for="@Model.QuantityInStock" type="number" class="form-control" aria-required="true" min="0" />
@@ -51,13 +44,8 @@
                 <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Add" />
+                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Submit" />
             </div>
         </form>
     </div>
 </div>
-
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

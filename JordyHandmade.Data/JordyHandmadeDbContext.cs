@@ -12,6 +12,10 @@
         public JordyHandmadeDbContext(DbContextOptions<JordyHandmadeDbContext> options)
             : base(options)
         {
+            if (!this.Database.IsRelational())
+            {
+                this.Database.EnsureCreated();
+            }
         }
 
         public DbSet<Address> Addresses { get; set; } = null!;

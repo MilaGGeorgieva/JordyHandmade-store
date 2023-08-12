@@ -21,8 +21,8 @@
             @if (User.IsAdmin())
             {     
                 <div class="d-flex flex-row">
-                    <a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-50 p-3 me-2 fw-bold">Edit</a>
-                    <a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-danger mb-2 w-50 p-3 ms-2 fw-bold">Delete</a>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-50 p-3 me-2 fw-bold">Edit</a>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-danger mb-2 w-50 p-3 ms-2 fw-bold">Delete</a>
                 </div>
                 
             }

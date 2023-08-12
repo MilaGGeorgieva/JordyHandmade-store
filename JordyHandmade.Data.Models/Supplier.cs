@@ -19,7 +19,7 @@
 
         [Comment("Supplier name")]
         [Required]
-        [MaxLength(NameMaxLength)]
+        [MaxLength(SupplierNameMaxLength)]
         public string SupplierName { get; set; } = null!;
 
         [Comment("Supplier web site")]

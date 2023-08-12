@@ -34,8 +34,8 @@
 
         public static class Supplier 
         {
-            public const int NameMinLength = 4;
-            public const int NameMaxLength = 50;
+            public const int SupplierNameMinLength = 4;
+            public const int SupplierNameMaxLength = 50;
 
             public const int WebAddressMinLength = 10;
             public const int WebAddressMaxLength = 100;
