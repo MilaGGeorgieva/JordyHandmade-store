@@ -1,0 +1,14 @@
+﻿@model SupplierFormModel
+
+@{
+	ViewData["Title"] = "Add new supplier";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_SupplierFormPartial" model="@Model" />
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

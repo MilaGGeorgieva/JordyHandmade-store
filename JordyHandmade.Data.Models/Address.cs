@@ -28,7 +28,7 @@
         public virtual Town Town { get; set; } = null!;
 
         public Guid? SupplierId { get; set; }
-        public virtual Supplier? Supplier { get; set; } = null!;
+        public virtual Supplier? Supplier { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
     }
