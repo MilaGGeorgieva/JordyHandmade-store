@@ -39,7 +39,7 @@
 
             public const int WebAddressMinLength = 10;
             public const int WebAddressMaxLength = 100;
-            public const string WebAddressRegEx = @"www.[a-zA-Z0-9\-]+.com";
+            public const string WebAddressRegEx = @"(http://|https://|www.)[a-zA-Z0-9\-]+.(com|bg|org|us|uk)";
  
 
             public const int EmailAddressMinLength = 10;

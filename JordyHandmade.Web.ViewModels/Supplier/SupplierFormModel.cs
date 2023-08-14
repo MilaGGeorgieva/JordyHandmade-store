@@ -14,7 +14,7 @@
 		public string SupplierName { get; set; } = null!;
 				
 		[StringLength(WebAddressMaxLength, MinimumLength = WebAddressMinLength)]
-		[RegularExpression(WebAddressRegEx)]
+		[RegularExpression(WebAddressRegEx, ErrorMessage = "Web Address should be in the format http(s)://(www.)text.com(bg)(org)(us)(uk)")]
 		public string? Website { get; set; }
 				
 		[EmailAddress]
@@ -35,7 +35,7 @@
 
 		[Required]
 		[StringLength(ZipLength, MinimumLength = ZipLength)]
-		[RegularExpression(ZipRegEx)]
+		[RegularExpression(ZipRegEx, ErrorMessage = "Zip code should contain only numbers!")]
 		public string ZipCode { get; set; } = null!;
 
 		[Required]

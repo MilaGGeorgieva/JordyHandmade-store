@@ -25,22 +25,22 @@
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.StreetAddress" class="form-label">Street address</label>
-                <input asp-for="@Model.StreetAddress" type="number" class="form-control" aria-required="true" />
+                <input asp-for="@Model.StreetAddress" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.StreetAddress" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.TownName" class="form-label">Town</label>
-                <input asp-for="@Model.TownName" type="number" class="form-control" aria-required="true" />
+                <input asp-for="@Model.TownName" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.TownName" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.ZipCode" class="form-label">Zip Code</label>
-                <input asp-for="@Model.ZipCode" type="number" class="form-control" aria-required="true" />
+                <input asp-for="@Model.ZipCode" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.ZipCode" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.IsActive" class="form-label-add-edit">Actively used supplier or not used anymore</label>
-                <input asp-for="@Model.IsActive" class="form-control" aria-required="true">
+                <input asp-for="@Model.IsActive" type="checkbox">
                 <span asp-validation-for="@Model.IsActive" class="text-danger"></span>
             </div>
             <div class="mb-3">

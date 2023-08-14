@@ -9,13 +9,12 @@
 
     public class JordyHandmadeDbContext : IdentityDbContext<Customer, IdentityRole<Guid>, Guid>
     {
-        public JordyHandmadeDbContext(DbContextOptions<JordyHandmadeDbContext> options)
+        private readonly bool seedDb;
+        
+        public JordyHandmadeDbContext(DbContextOptions<JordyHandmadeDbContext> options, bool seedDb = true)
             : base(options)
-        {
-            if (!this.Database.IsRelational())
-            {
-                this.Database.EnsureCreated();
-            }
+        {    
+            this.seedDb = seedDb;
         }
 
         public DbSet<Address> Addresses { get; set; } = null!;
@@ -63,6 +62,12 @@
             modelBuilder.ApplyConfiguration(new CategoryEntityConfiguration());
 
             modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
+
+            if (this.seedDb)
+            {
+                modelBuilder.ApplyConfiguration(new SeedCategoryEntityConfiguration());
+                modelBuilder.ApplyConfiguration(new SeedProductEntityConfiguration());
+            }
                 
             base.OnModelCreating(modelBuilder);
         }

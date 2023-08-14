@@ -1,20 +1,19 @@
 namespace JordyHandmade.Services.Tests
 {
-	using Microsoft.EntityFrameworkCore;
-	using Moq;
-	using Moq.EntityFrameworkCore;
-
 	using JordyHandmade.Data;
-	using JordyHandmade.Data.Models;
-	using static DbMockSeedData;
 	using JordyHandmade.Services.Data.Interfaces;
 	using JordyHandmade.Services.Data.Services;
+	using Microsoft.EntityFrameworkCore;
+	using Moq;
+	using static DatabaseSeeder;
 
 	public class ProductServiceTests
 	{
 		private DbContextOptions<JordyHandmadeDbContext> dbContextOptions;
 		private JordyHandmadeDbContext dbContext;
-		private Mock<JordyHandmadeDbContext> dbMock;
+		//private Mock<JordyHandmadeDbContext> dbMock;
+
+		private IProductService productService;
 
 		public ProductServiceTests()
 		{
@@ -27,7 +26,12 @@ namespace JordyHandmade.Services.Tests
 			this.dbContextOptions = new DbContextOptionsBuilder<JordyHandmadeDbContext>()
 				.UseInMemoryDatabase("JordyHandmadeInMemory" + Guid.NewGuid().ToString())
 				.Options;
-			this.dbContext = new JordyHandmadeDbContext(this.dbContextOptions);
+			this.dbContext = new JordyHandmadeDbContext(this.dbContextOptions, false);
+			
+			this.dbContext.Database.EnsureCreated();
+			SeedDatabase(this.dbContext);
+
+			this.productService = new ProductService(this.dbContext);
 		}
 		
 		[SetUp]
@@ -36,11 +40,13 @@ namespace JordyHandmade.Services.Tests
 		}
 
 		[Test]
-		public void ExistsByIdAsyncReturnsTrueWhenExists()
+		public async Task ExistsByIdAsyncReturnsTrueWhenExists()
 		{
-			//var mock = new Mock<JordyHandmadeDbContext>()
-			//	.Setup(db => db.Products)
-			//	.ReturnsDbSet(Products);			
+			string existingProductId = Product.Id.ToString();
+
+			bool result = await this.productService.ExistsByIdAsync(existingProductId);
+
+			Assert.True(result);
 		}
 	}
 }

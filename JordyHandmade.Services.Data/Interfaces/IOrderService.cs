@@ -1,14 +1,9 @@
-﻿using JordyHandmade.Web.ViewModels.Customer;
-using JordyHandmade.Web.ViewModels.Order;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JordyHandmade.Services.Data.Interfaces
+﻿namespace JordyHandmade.Services.Data.Interfaces
 {
-    public interface IOrderService
+	using JordyHandmade.Web.ViewModels.Order;
+    using JordyHandmade.Services.Data.Models;
+
+	public interface IOrderService
     {
         Task<bool> OrderExistsByIdAsync(string id);
 
@@ -25,5 +20,7 @@ namespace JordyHandmade.Services.Data.Interfaces
         Task<IEnumerable<MyOrdersViewModel>> GetMyOrdersAsync(string customerId);
 
         Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId);
+
+        Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel);
     }
 }

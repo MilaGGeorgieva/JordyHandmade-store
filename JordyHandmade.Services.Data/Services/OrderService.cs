@@ -9,7 +9,9 @@
     using System.Collections.Generic;
     using JordyHandmade.Data.Models.Enums;
     using JordyHandmade.Web.ViewModels.Customer;
-    using System.Net.WebSockets;    
+    using System.Net.WebSockets;
+	using JordyHandmade.Services.Data.Models;
+    using JordyHandmade.Web.ViewModels.Order.Enums;
 
     public class OrderService : IOrderService
     {
@@ -187,6 +189,49 @@
                 .FirstAsync(o => o.OrderId == orderId);
 
             return confirmationInfo; 
+		}
+
+		public Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel)
+		{
+            IQueryable<Order> ordersQuery = dbContext
+                .Orders
+                .Include(o => o.Customer)
+                .ThenInclude(c => c.Address)
+                .ThenInclude(a => a.Town)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryModel.Status))
+            {
+                ordersQuery = ordersQuery
+                    .Where(o => o.Status.ToString() == queryModel.Status);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryModel.CustomerName))
+            {
+                ordersQuery = ordersQuery
+                    .Where(o => o.Customer.CustomerName == queryModel.CustomerName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryModel.TownName))
+            {
+                ordersQuery = ordersQuery
+                    .Where(o => o.Customer.Address.Town.TownName == queryModel.TownName);
+            }
+
+            ordersQuery = queryModel.OrderSorting switch
+            {
+                OrderSorting.Newest => ordersQuery
+                    .OrderByDescending(o => o.StartDate),
+                OrderSorting.Oldest => ordersQuery
+                    .OrderBy(o => o.StartDate),
+                OrderSorting.TotalAmountAscending => ordersQuery
+                    .OrderBy(o => o.TotalAmount),
+                OrderSorting.TotalAmountDescending => ordersQuery
+                    .OrderByDescending(o => o.TotalAmount),
+                _ => ordersQuery
+                    .OrderByDescending(o => o.StartDate)
+            };
+
 		}
 	}
 }
