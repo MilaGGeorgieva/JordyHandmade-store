@@ -1,9 +1,11 @@
 ﻿namespace JordyHandmade.Web.ViewModels.Order
 {
+	using System.ComponentModel.DataAnnotations;
+
 	public class OrderAllViewModel : MyOrdersViewModel 
 	{
-		//[DataType(DataType.DateTime)]
-		//[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd H:mm}", ApplyFormatInEditMode = true)]
+		[DataType(DataType.DateTime)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd H:mm}", ApplyFormatInEditMode = true)]
 		public string? EndDate { get; set; }
 
 		public string CustomerId { get; set; } = null!;

@@ -83,7 +83,17 @@
                 TownName = town.TownName,
                 ZipCode = town.ZipCode,
             };
-		}        
-    }
+		}
+
+		public async Task<IEnumerable<string>> GetAllTownNamesAsync()
+		{
+			IEnumerable<string> townNames = await dbContext
+                .Towns
+                .Select(t => t.TownName)
+                .ToArrayAsync();
+
+            return townNames;
+		}
+	}
     
 }

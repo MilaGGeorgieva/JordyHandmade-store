@@ -191,7 +191,7 @@
             return confirmationInfo; 
 		}
 
-		public Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel)
+		public async Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel)
 		{
             IQueryable<Order> ordersQuery = dbContext
                 .Orders
@@ -232,6 +232,36 @@
                     .OrderByDescending(o => o.StartDate)
             };
 
+            IEnumerable<OrderAllViewModel> allOrders = await ordersQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.OrdersPerPage)
+                .Take(queryModel.OrdersPerPage)
+                .Select(o => new OrderAllViewModel()
+                {
+                    Id = o.Id.ToString(),
+                    Status = o.Status.ToString(),
+                    StartDate = o.StartDate.ToString("yyyy-MM-dd H:mm"),
+                    EndDate = o.EndDate.ToString(),
+                    TotalAmount = o.TotalAmount,
+                    CustomerId = o.CustomerId.ToString(),
+                    CustomerName = o.Customer.CustomerName!,
+                    TownName = o.Customer.Address.Town.TownName ?? string.Empty
+                })
+                .ToArrayAsync();
+
+            int ordersCount = ordersQuery.Count();
+
+            return new AllOrdersServiceModel()
+            {
+                TotalOrdersCount = ordersCount,
+                AllOrders = allOrders
+            };
+		}
+
+		public IEnumerable<string> GetAllStatusTypes()
+		{
+            IEnumerable<string> statusTypes = Enum.GetValues(typeof(OrderStatus)).Cast<string>();
+
+            return statusTypes;
 		}
 	}
 }

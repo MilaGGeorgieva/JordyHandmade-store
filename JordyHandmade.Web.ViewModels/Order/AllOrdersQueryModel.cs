@@ -16,13 +16,11 @@
 			Orders = new HashSet<OrderAllViewModel>();
 		}
 		
-		public string? Status { get; set; }
-
-		public string? CustomerId { get; set; }
+		public string? Status { get; set; }		
 
 		public string? CustomerName { get; set; }
 
-		public string TownName { get; set; } = null!;
+		public string? TownName { get; set; }
 
 		public OrderSorting OrderSorting { get; set; }
 
@@ -30,7 +28,9 @@
 
 		public int OrdersPerPage { get; set; }
 
-		public int TotalOrders { get; set; }
+		public int TotalOrdersCount { get; set; }
+
+		public IEnumerable<string> StatusTypes { get; set; }
 
 		public IEnumerable<string> Customers { get; set; }
 

@@ -149,6 +149,16 @@
             }
 
             return customer.CustomerName;
-        }        
-    }
+        }
+
+		public async Task<IEnumerable<string>> GetAllCustomerNamesAsync()
+		{
+			IEnumerable<string> customerNames = await this.dbContext
+                .Customers
+                .Select(c => c.CustomerName!)
+                .ToArrayAsync();
+
+            return customerNames;
+		}
+	}
 }

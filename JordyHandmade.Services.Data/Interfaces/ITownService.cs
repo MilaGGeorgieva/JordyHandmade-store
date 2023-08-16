@@ -4,7 +4,9 @@
 
     public interface ITownService
     {
-		Task<IEnumerable<TownFormModel>> GetAllForSelectAsync();        
+		Task<IEnumerable<TownFormModel>> GetAllForSelectAsync();  
+        
+        Task<IEnumerable<string>> GetAllTownNamesAsync();
         
         Task<bool> TownExistsByZipAsync(string zipCode);
 

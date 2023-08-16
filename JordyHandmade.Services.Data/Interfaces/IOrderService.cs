@@ -22,5 +22,7 @@
         Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId);
 
         Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel);
+
+        IEnumerable<string> GetAllStatusTypes();
     }
 }
