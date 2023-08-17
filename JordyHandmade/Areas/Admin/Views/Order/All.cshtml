@@ -19,7 +19,10 @@
                     {
                         <option value="@customer">@customer</option>
                     }
-                </select>
+                </select>                
+            </div>
+
+            <div class="form-group">
                 <label asp-for="TownName"></label>
                 <select asp-for="TownName" class="form-control">
                     <option value="">All</option>
@@ -29,6 +32,17 @@
                     }
                 </select>
             </div>
+            
+            <div class="form-group">
+                <label asp-for="Status"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var status in Model.StatusTypes)
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+            </div>  
 
             <div class="form-group">
                 <label asp-for="OrdersPerPage"></label>
@@ -74,13 +88,15 @@
 
 <div class="row mb-5">
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+        <a class="btn btn-primary 
+                @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-area="Admin"
            asp-controller="Order"
            asp-action="All"
            asp-route-currentPage="@previousPage"
-           asp-route-town="@Model.TownName"
            asp-route-customer="@Model.CustomerName"
+           asp-route-town="@Model.TownName"
+           asp-route-status="@Model.Status"
            asp-route-sorting="@((int)Model.OrderSorting)"><<</a>
     </div>
 
@@ -91,13 +107,14 @@
 
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-primary
-           @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
+                @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
            asp-area="Admin"
            asp-controller="Order"
            asp-action="All"
-           asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-town="@Model.TownName"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"           
            asp-route-customer="@Model.CustomerName"
+           asp-route-town="@Model.TownName"
+           asp-route-status="@Model.Status"
            asp-route-sorting="@((int)Model.OrderSorting)">>></a>
     </div>
 </div>
@@ -107,9 +124,9 @@
     <h2 class="text-center">No orders found by the given criteria!</h2>
 }
 
-@*<div class="row">
+<div class="row">
     @foreach (var order in Model.Orders)
     {
-        <partial name="_......Partial" model="@...." />
+        <partial name="_OrderPartial" model="@order" />
     }
-</div>*@
+</div>
