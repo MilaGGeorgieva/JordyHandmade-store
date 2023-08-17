@@ -25,7 +25,7 @@
             return result;
         }
 
-        public async Task<IEnumerable<CategorySelectViewModel>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<CategorySelectViewModel>> GetAllCategoriesForSelectAsync()
         {
             IEnumerable<CategorySelectViewModel> allCategories = await this.dbContext
                 .Categories
@@ -33,7 +33,7 @@
                 {
                     Id = c.Id,
                     CategoryName = c.CategoryName,
-                    Description = c.Description,
+                    //Description = c.Description,
                 })
                 .ToArrayAsync();
 
@@ -51,5 +51,55 @@
 			await dbContext.Categories.AddAsync(category);
 			await dbContext.SaveChangesAsync();
 		}
-	}
+
+        public async Task<IEnumerable<CategoryAllViewModel>> GetAllCategoriesAsync()
+        {
+            IEnumerable<CategoryAllViewModel> allCategories = await this.dbContext
+                .Categories                
+                .Select(c => new CategoryAllViewModel()
+                {
+                    Id = c.Id,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description,
+                    IsActive = c.IsActive                    
+                })
+                .ToArrayAsync();
+
+            return allCategories;
+        }
+
+        public async Task<CategoryFormModel> GetCategoryByIdAsync(int id)
+        {
+            Category category = await this.dbContext
+                .Categories.FirstAsync(c => c.Id == id);
+
+            return new CategoryFormModel() 
+            {
+                Id = category.Id,
+                CategoryName = category.CategoryName,
+                Description = category.Description            
+            };            
+        }
+
+        public async Task UpdateCategoryAsync(int id, CategoryFormModel editModel)
+        {
+            Category categoryToUpdate = await this.dbContext
+                .Categories.FirstAsync(c => c.Id == id);
+                       
+            categoryToUpdate.CategoryName = editModel.CategoryName;
+            categoryToUpdate.Description = editModel.Description;            
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteCategoryAsync(int id)
+        {
+            Category categoryToDelete = await this.dbContext
+              .Categories.FirstAsync(c => c.Id == id);
+                        
+            categoryToDelete.IsActive = false;
+            
+            await this.dbContext.SaveChangesAsync();
+        }
+    }
 }

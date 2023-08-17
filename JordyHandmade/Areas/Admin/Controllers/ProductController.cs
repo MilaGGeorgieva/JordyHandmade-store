@@ -22,7 +22,7 @@
 		{
 			ProductFormModel productForm = new ProductFormModel()
 			{
-				Categories = await this.categoryService.GetAllCategoriesAsync(),
+				Categories = await this.categoryService.GetAllCategoriesForSelectAsync(),
 			};
 
 			return View(productForm);
@@ -36,13 +36,13 @@
 			if (!categoryExists)
 			{
 				ModelState.AddModelError(nameof(productForm.CategoryId), "Entered category does not exist!");
-				productForm.Categories = await this.categoryService.GetAllCategoriesAsync();
+				productForm.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 				return View(productForm);
 			}
 
 			if (!ModelState.IsValid)
 			{
-				productForm.Categories = await this.categoryService.GetAllCategoriesAsync();
+				productForm.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 				return View(productForm);
 			}
 
@@ -53,7 +53,7 @@
 			catch (Exception)
 			{
 				this.ModelState.AddModelError(string.Empty, "Unexpected error ocurred while adding current product.");
-				productForm.Categories = await this.categoryService.GetAllCategoriesAsync();
+				productForm.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 				return View(productForm);
 			}
 
@@ -74,7 +74,7 @@
 			try
 			{
 				ProductFormModel editModel = await this.productService.GetProductToEditAsync(id);
-				editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+				editModel.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 
 				return View(editModel);
 			}
@@ -89,7 +89,7 @@
 		{			
 			if (!ModelState.IsValid)
 			{
-				editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+				editModel.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 				return View(editModel);
 			}
 
@@ -107,7 +107,7 @@
 			if (!categoryExists)
 			{
 				ModelState.AddModelError(nameof(editModel.CategoryId), "Entered category does not exist!");
-				editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+				editModel.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 				return View(editModel);
 			}
 
@@ -118,7 +118,7 @@
 			catch (Exception)
 			{
 				ModelState.AddModelError(string.Empty, "Unexpected error ocurred while updating selected product. Please try again later!");
-				editModel.Categories = await this.categoryService.GetAllCategoriesAsync();
+				editModel.Categories = await this.categoryService.GetAllCategoriesForSelectAsync();
 				return View(editModel);
 			}
 

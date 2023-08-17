@@ -13,6 +13,6 @@
 
 		[Required]
 		[StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
-		public string Description { get; set; } = null!;
+		public string Description { get; set; } = null!;		
 	}
 }

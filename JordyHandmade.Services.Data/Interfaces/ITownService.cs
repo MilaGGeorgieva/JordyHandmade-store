@@ -17,6 +17,5 @@
         Task UpdateAsync(int id, TownFormModel editModel);
 
         Task DeleteAsync(int id);
-
     }
 }
