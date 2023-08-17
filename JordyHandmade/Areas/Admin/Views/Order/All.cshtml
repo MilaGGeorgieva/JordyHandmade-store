@@ -10,7 +10,7 @@
 
 <form method="get">
     <div class="row">
-        <div class="form-group col-md-3 d-flex justify-content-between">
+        <div class="form-group col-md-8 d-flex justify-content-between">
             <div class="form-group">
                 <label asp-for="CustomerName"></label>
                 <select asp-for="CustomerName" class="form-control">
@@ -37,24 +37,19 @@
                 <label asp-for="Status"></label>
                 <select asp-for="Status" class="form-control">
                     <option value="">All</option>
-                    @foreach (var status in Model.StatusTypes)
+                    <option value="Collecting">Collecting</option>
+                    <option value="ToBeSent">To Be Sent</option>
+                    <option value="InDelivery">In Delivery</option>
+                    <option value="InDispute">In Dispute</option>
+                    <option value="Returned">Returned</option>
+                    <option value="DeliveredAndClosed">Delivered and Closed</option>
+                    @*@foreach (var status in Model.StatusTypes)
                     {
                         <option value="@status">@status</option>
-                    }
+                    }*@
                 </select>
-            </div>  
+            </div>          
 
-            <div class="form-group">
-                <label asp-for="OrdersPerPage"></label>
-                <select asp-for="OrdersPerPage" class="form-control">
-                    <option value="3">3</option>
-                    <option value="6">6</option>
-                    <option value="9">9</option>
-                </select>
-            </div>
-        </div>        
-
-        <div class="form-group col-md-3">
             <div class="form-group">
                 <label asp-for="OrderSorting"></label>
                 <select asp-for="OrderSorting" class="form-control">
@@ -63,11 +58,22 @@
                     <option value="2">Total amount (Ascending)</option>
                     <option value="3">Total amount (Descending)</option>                    
                 </select>
+            </div>            
+        </div>        
+
+        <div class="form-group col-md-2">
+            <div class="form-group">
+                <label asp-for="OrdersPerPage"></label>
+                <select asp-for="OrdersPerPage" class="form-control">
+                    <option value="3">3</option>
+                    <option value="6">6</option>
+                    <option value="9">9</option>
+                </select>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="form-group mt-4 p-2">
+        <div class="col-md-2">
+            <div class="form-group mt-4 p-2 ms-auto">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         </div>

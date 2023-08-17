@@ -32,7 +32,7 @@
     <div class="text-center row">    
           <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderData.OrderId" class="btn btn-warning">Edit your order</a>
           <a asp-controller="Order" asp-action="DeliveryData" asp-route-id="@Model.OrderData.OrderId" class="btn btn-success">Change delivery data</a>
-          <a asp-controller="Order" asp-action="DeleteOrder" asp-route-id="@Model.OrderData.OrderId" class="btn btn-danger">Cancel order</a>
+          <a asp-controller="Order" asp-action="Delete" asp-route-id="@Model.OrderData.OrderId" class="btn btn-danger">Cancel order</a>
     </div>
 </div>
  <a asp-controller="Order" asp-action="DeliveryTerms">Information about delivery and payment</a>

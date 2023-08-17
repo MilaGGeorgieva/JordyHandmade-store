@@ -18,11 +18,11 @@
                 <p class="mb-0"><span class="fw-bold">Order total amount: </span>@order.TotalAmount</p>
             </div>
 
-            @if (order.Status == "Collecting")
-            {                
+            @*@if (order.Status == "Collecting")
+            { *@               
                 <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit your order</a>
-                <a asp-controller="Order" asp-action="DeleteOrder" asp-route-id="@order.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Cancel your order</a>
-            }
+                <a asp-controller="Order" asp-action="Delete" asp-route-id="@order.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Cancel your order</a>
+            @*}*@
             
             <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">View Details</a>
             

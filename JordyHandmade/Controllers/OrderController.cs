@@ -7,6 +7,7 @@
     using JordyHandmade.Services.Data.Interfaces;
     using JordyHandmade.Web.ViewModels.Order;
     using JordyHandmade.Web.ViewModels.Customer;
+    using static JordyHandmade.Common.NotificationMessagesConstants;
 
     [Authorize]
     public class OrderController : Controller
@@ -198,6 +199,78 @@
 
             OrderConfirmationViewModel confirmaionModel = await this.orderService.GetConfirmationInfoAsync(id);
             return View(confirmaionModel);
+        }
+
+        public async Task<IActionResult> Delete(string id) 
+        {
+            bool orderExists = await this.orderService.OrderExistsByIdAsync(id);
+
+            if (!orderExists) 
+            {
+                TempData[ErrorMessage] = "Order with the provided id does not exist!";
+                
+                return this.RedirectToAction("Mine");
+            }
+
+            string currentUserId = this.User.GetUserId();
+
+            bool isCustomerOwner = await this.orderService.IsCustomerOwnerOfOrderByIdsAsync(currentUserId, id);
+
+            if (!isCustomerOwner && !User.IsAdmin()) 
+            {
+                TempData[ErrorMessage] = "You are not the customer making this order and you can not delete it!";
+
+                return this.RedirectToAction("Mine");
+            }
+
+            try
+            {
+                OrderStatusViewModel deleteModel = await this.orderService.GetOrderToDeleteAsync(id);
+
+                return View(deleteModel);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Unexpected error occurred! Try again!";
+                return RedirectToAction("Mine");                
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id, OrderStatusViewModel deleteModel) 
+        {
+            bool orderExists = await this.orderService.OrderExistsByIdAsync(id);
+
+            if (!orderExists)
+            {
+                TempData[ErrorMessage] = "Order with the provided id does not exist!";
+
+                return this.RedirectToAction("Mine");
+            }
+
+            string currentUserId = this.User.GetUserId();
+
+            bool isCustomerOwner = await this.orderService.IsCustomerOwnerOfOrderByIdsAsync(currentUserId, id);
+
+            if (!isCustomerOwner && !User.IsAdmin())
+            {
+                TempData[ErrorMessage] = "You are not the customer making this order and you can not delete it!";
+
+                return this.RedirectToAction("Mine");
+            }
+
+            try
+            {
+                await this.orderService.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while deleting selected order!");
+                return View(deleteModel);
+            }
+
+            TempData[SuccessMessage] = "Selected order was deleted successfully!";
+            return RedirectToAction("Mine");
         }
 
         public async Task<IActionResult> Mine() 

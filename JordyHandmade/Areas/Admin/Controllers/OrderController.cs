@@ -27,7 +27,7 @@
 			queryModel.TotalOrdersCount = serviceModel.TotalOrdersCount;
 			queryModel.Towns = await this.townService.GetAllTownNamesAsync();
 			queryModel.Customers = await this.customerService.GetAllCustomerNamesAsync();
-			queryModel.StatusTypes = this.orderService.GetAllStatusTypes(); 
+			//queryModel.StatusTypes = this.orderService.GetAllStatusTypes(); 
 
 			return View(queryModel);
 		}

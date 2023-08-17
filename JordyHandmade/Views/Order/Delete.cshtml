@@ -1,0 +1,29 @@
+﻿@model OrderStatusViewModel
+
+@{
+    ViewData["Title"] = "Delete order";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<form asp-action="Delete">
+    <div class="text-center">
+        <h5>Are sure you want to delete this order? If you reached this page by mistake please use the buttons below</h5>
+    </div>
+
+    <partial name="_OrderStatusPartial" model="@Model">
+
+    <div class="mb-3 d-flex justify-content-center flex-column">
+            <input type="submit" value="Delete" class="btn btn-danger" />            
+    </div>
+
+    <div class="text-center row">
+        <a asp-controller="Product" asp-action="All" class="btn btn-primary">Continue shopping</a>
+        <a asp-controller="Order" asp-action="Mine" class="btn btn-success">My orders</a>
+        <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-warning">Edit your order</a>
+    </div>
+
+</form>
+
+

@@ -9,6 +9,8 @@
 
         Task<string> GetOrderCompilingId(string customerId);
 
+        Task<bool> IsCustomerOwnerOfOrderByIdsAsync(string customerId, string orderId);
+
         Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel);
 
         Task RemoveFromOrderAsync(string productId, string orderCompilingId);
@@ -17,9 +19,13 @@
 
         Task FinalizeOrderAsync(string orderId);
 
-        Task<IEnumerable<MyOrdersViewModel>> GetMyOrdersAsync(string customerId);
-
         Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId);
+
+        Task<OrderStatusViewModel> GetOrderToDeleteAsync(string orderId);
+
+        Task DeleteAsync(string orderId);
+
+        Task<IEnumerable<MyOrdersViewModel>> GetMyOrdersAsync(string customerId);        
 
         Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel);
 

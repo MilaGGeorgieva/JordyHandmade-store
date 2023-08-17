@@ -30,7 +30,7 @@
 
 		public int TotalOrdersCount { get; set; }
 
-		public IEnumerable<string> StatusTypes { get; set; }
+		//public IEnumerable<string> StatusTypes { get; set; }
 
 		public IEnumerable<string> Customers { get; set; }
 

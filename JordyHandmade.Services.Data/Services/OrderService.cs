@@ -11,7 +11,7 @@
     using JordyHandmade.Web.ViewModels.Customer;
     using System.Net.WebSockets;
 	using JordyHandmade.Services.Data.Models;
-    using JordyHandmade.Web.ViewModels.Order.Enums;
+    using JordyHandmade.Web.ViewModels.Order.Enums;    
 
     public class OrderService : IOrderService
     {
@@ -158,6 +158,21 @@
             return orderCompiling.Id.ToString();
         }
 
+        public async Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId)
+        {
+            OrderConfirmationViewModel confirmationInfo = await this.dbContext
+                .Orders
+                .Select(o => new OrderConfirmationViewModel()
+                {
+                    OrderId = o.Id.ToString(),
+                    OrderTotal = o.TotalAmount,
+                    StartDate = o.StartDate.ToString("yyyy-MM-dd H:mm")
+                })
+                .FirstAsync(o => o.OrderId == orderId);
+
+            return confirmationInfo;
+        }
+
         public async Task<IEnumerable<MyOrdersViewModel>> GetMyOrdersAsync(string customerId)
         {
             IEnumerable<MyOrdersViewModel> myOrders = await this.dbContext
@@ -174,22 +189,7 @@
                 .ToArrayAsync();
 
             return myOrders;
-        }
-
-		public async Task<OrderConfirmationViewModel> GetConfirmationInfoAsync(string orderId)
-		{			
-			OrderConfirmationViewModel confirmationInfo = await this.dbContext
-                .Orders              
-                .Select(o => new OrderConfirmationViewModel() 
-                {
-                    OrderId = o.Id.ToString(),
-                    OrderTotal = o.TotalAmount,
-                    StartDate = o.StartDate.ToString("yyyy-MM-dd H:mm")
-                })
-                .FirstAsync(o => o.OrderId == orderId);
-
-            return confirmationInfo; 
-		}
+        }		
 
 		public async Task<AllOrdersServiceModel> GetAllAsync(AllOrdersQueryModel queryModel)
 		{
@@ -263,5 +263,55 @@
 
             return statusTypes;
 		}
-	}
+
+        public async Task<OrderStatusViewModel> GetOrderToDeleteAsync(string orderId)
+        {
+            var orderedProducts = await this.dbContext
+                .OrdersProducts
+                .Where(op => op.OrderId.ToString() == orderId)
+                .Select(op => new OrderedProductViewModel() 
+                {
+                    ProductId = op.ProductId.ToString(),
+                    ProductName = op.Product.Name,
+                    Price = op.Product.Price,
+                    ProductQuantity = op.ProductQuantity,
+                    ProductTotal = op.Product.Price * op.ProductQuantity, 
+                })
+                .ToArrayAsync();
+            
+            var orderDate = await this.dbContext
+                .Orders
+                .Where(o => o.Id.ToString() == orderId)
+                .Select(o => o.StartDate.ToString("yyyy-MM-dd H:mm"))
+                .FirstAsync();
+                     
+            OrderStatusViewModel orderForDelete = new OrderStatusViewModel() 
+            {
+                OrderId = orderId,
+                OrderedProducts = orderedProducts,
+                OrderTotal = orderedProducts.Sum(x => x.ProductQuantity * x.Price),
+                StartDate = orderDate
+            };
+            
+            return orderForDelete;
+        }
+
+        public async Task DeleteAsync(string orderId)
+        {
+            Order orderForDelete = await this.dbContext
+                .Orders.FirstAsync(o => o.Id.ToString() == orderId);
+
+            dbContext.Orders.Remove(orderForDelete);
+            await this.dbContext.SaveChangesAsync();            
+        }
+
+        public async Task<bool> IsCustomerOwnerOfOrderByIdsAsync(string customerId, string orderId)
+        {
+            bool result = await this.dbContext
+                .Orders
+                .AnyAsync(o => o.Id.ToString() == orderId && o.CustomerId.ToString() == customerId);           
+
+            return result;
+        }
+    }
 }
