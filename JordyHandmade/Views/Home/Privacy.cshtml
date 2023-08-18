@@ -1,6 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿@section Styles{
+    <link rel="stylesheet" href="~/css/constr_style.css" />
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+@{
+    ViewData["Title"] = "Privacy";
+}
+
+<div class="text-center">
+    <h1>JordyHandmade @ViewData["Title"] Policy</h1>
+</div>
+<hr />
+
+<div class="text-center">
+    <h5>General Conditions, Intelectual property, JordyHandmade data as seller</h5>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget..</p>
+
+    <h5>GDPR policy, personal data handling</h5>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+
+    <h5>Customer rights and obligations, right to cancel order, return products etc.</h5>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium arcu nec.</p>
+</div>
+
+<partial name="_UnderConstructionPartial">
