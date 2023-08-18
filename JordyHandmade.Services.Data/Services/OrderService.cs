@@ -260,8 +260,11 @@
 
             if (!string.IsNullOrWhiteSpace(queryModel.Status))
             {
+                OrderStatus status;
+                Enum.TryParse(queryModel.Status, out status);
+
                 ordersQuery = ordersQuery
-                    .Where(o => o.Status.ToString() == queryModel.Status);
+                    .Where(o => o.Status == status);
             }
 
             if (!string.IsNullOrWhiteSpace(queryModel.CustomerName))
