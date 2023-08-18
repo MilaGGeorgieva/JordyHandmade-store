@@ -9,6 +9,8 @@
 
         Task<string> GetOrderCompilingId(string customerId);
 
+        Task<int> GetProductQtyInOrderByIdsAsync(string orderId, string productId);
+
         Task<bool> IsCustomerOwnerOfOrderByIdsAsync(string customerId, string orderId);
 
         Task AddToOrderAsync(string customerId, string productId, OrderFormModel orderModel);
@@ -16,6 +18,10 @@
         Task RemoveFromOrderAsync(string productId, string orderCompilingId);
 
         Task<OrderStatusViewModel> GetOrderStatusAsync(string customerId);
+
+        Task<OrderStatusViewModel> GetOrderDetailsAsync(string orderId);
+
+        Task UpdateOrderAsync(string orderId, string productId, OrderFormModel editModel);
 
         Task FinalizeOrderAsync(string orderId);
 

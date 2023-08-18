@@ -1,7 +1,7 @@
 ﻿@model OrderFormModel
 
 @{
-    ViewData["Title"] = "Buy product";
+    ViewData["Title"] = "Edit product quantity";
 }
 
 <h2 class="text-center">@ViewData["Title"]</h2>
@@ -16,20 +16,20 @@
             <p class="mb-0"><span class="fw-bold">Description: </span>@Model.ProductToBuy.Description</p>
             <p class="mb-0"><span class="fw-bold">Price: </span>@Model.ProductToBuy.Price</p>
             <p class="mb-0"><span class="fw-bold">Available quantity: </span>@Model.ProductToBuy.QuantityInStock</p>
-            <form asp-controller="Order" asp-action="BuyProduct" asp-route-id="@Model.ProductToBuy.Id">
-			    <div class="mb-3">
-				    <label asp-for="Quantity" class="form-label">Quantity (@Model.ProductToBuy.QuantityInStock pcs available currently)</label>
-				    <input asp-for="Quantity" type="number" class="form-control" aria-required="true" min="1" max="@Model.ProductToBuy.QuantityInStock"/>
-				    <span asp-validation-for="Quantity" class="text-danger"></span>
-			    </div>
+            <form asp-controller="Order" asp-action="Edit" asp-route-id="@Model.ProductToBuy.Id">
                 <div class="mb-3">
-                    <input class="btn btn-primary" type="submit" value="BuyProduct" />
+                    <label asp-for="Quantity" class="form-label">Quantity (@Model.ProductToBuy.QuantityInStock pcs available currently)</label>
+                    <input asp-for="Quantity" type="number" class="form-control" aria-required="true" min="1" max="@Model.ProductToBuy.QuantityInStock" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-primary" type="submit" value="Submit changes" />
                 </div>
             </form>
-        
+
         </div>
 
-        <a asp-controller="Product" asp-action="All" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to All Products</a>
+        <a asp-controller="Order" asp-action="OrderStatus" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to Order Status</a>
 
     </div>
 </div> 
@@ -37,4 +37,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

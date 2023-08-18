@@ -8,6 +8,7 @@
     using JordyHandmade.Web.ViewModels.Order;
     using JordyHandmade.Web.ViewModels.Customer;
     using static JordyHandmade.Common.NotificationMessagesConstants;
+    using JordyHandmade.Web.ViewModels.Product;
 
     [Authorize]
     public class OrderController : Controller
@@ -30,11 +31,13 @@
 
             if (!productExists) 
             {
+                TempData[ErrorMessage] = "Such product does not exist! Contact JordyHandmade!";
                 return this.RedirectToAction("All", "Product");
             }
 
             if (quantityAvailable == 0)
             {
+                TempData[ErrorMessage] = "Product is not available at the moment! Contact JordyHandmade!";
                 return this.RedirectToAction("All", "Product");
             }  
 
@@ -78,6 +81,72 @@
             {
                 ModelState.AddModelError(string.Empty, "Unexpected error occurred while adding this product to your order!");
                 return View(orderModel);
+            }
+
+            return RedirectToAction("OrderStatus");
+        }
+
+        public async Task<IActionResult> Edit(string id) 
+        {
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+            int quantityAvailable = await this.productService.GetQuantityInStockByIdAsync(id);
+
+            if (!productExists)
+            {
+                TempData[ErrorMessage] = "Such product does not exist! Contact JordyHandmade!";
+                return this.RedirectToAction("OrderStatus");
+            }
+
+            if (quantityAvailable == 0)
+            {
+                TempData[ErrorMessage] = "Product is not available at the moment! Contact JordyHandmade!";
+                return this.RedirectToAction("All", "Product");
+            }
+
+            string currentCustomerId = this.User.GetUserId();
+            string editedOrderId = await this.orderService.GetOrderCompilingId(currentCustomerId);
+            
+            try
+            {
+                OrderFormModel editModel = new OrderFormModel();
+                editModel.ProductToBuy = await this.productService.GetDetailsAsync(id);
+                editModel.Quantity = await this.orderService.GetProductQtyInOrderByIdsAsync(editedOrderId, id);
+                return View(editModel);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, OrderFormModel editModel)
+        {
+            int quantityAvailable = await this.productService.GetQuantityInStockByIdAsync(id);
+
+            if (editModel.Quantity > quantityAvailable)
+            {
+                ModelState.AddModelError(nameof(editModel.Quantity), "This product quantity is not available!");
+                return View(editModel);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(nameof(editModel.Quantity), "This product quantity is not correct!");
+                return View(editModel);
+            }
+
+            string currentCustomerId = this.User.GetUserId();
+            string editedOrderId = await this.orderService.GetOrderCompilingId(currentCustomerId);
+
+            try
+            {
+                await this.orderService.UpdateOrderAsync(editedOrderId, id, editModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while changing product quantity!");
+                return View(editModel);
             }
 
             return RedirectToAction("OrderStatus");
@@ -201,6 +270,16 @@
             return View(confirmaionModel);
         }
 
+        public IActionResult DeliveryTerms()
+        {
+            return View();
+        }
+
+        public IActionResult ReturnPolicy()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Delete(string id) 
         {
             bool orderExists = await this.orderService.OrderExistsByIdAsync(id);
@@ -281,6 +360,30 @@
                 await this.orderService.GetMyOrdersAsync(currentUserId);
 
             return View(myOrders);
+        }
+
+        public async Task<IActionResult> Details(string id) 
+        {
+            bool orderExists = await this.orderService.OrderExistsByIdAsync(id);
+
+            if (!orderExists)
+            {
+                TempData[ErrorMessage] = "Order with the provided id does not exist!";
+
+                return this.RedirectToAction("Mine");
+            }
+
+            try
+            {
+                OrderStatusViewModel detailsView = await this.orderService.GetOrderDetailsAsync(id);
+
+                return View(detailsView);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] = "Unexpected error occurred! Try again!";
+                return this.RedirectToAction("Mine");
+            }            
         }
     }
 }

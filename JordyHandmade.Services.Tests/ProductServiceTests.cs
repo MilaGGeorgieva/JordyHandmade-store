@@ -67,7 +67,7 @@ namespace JordyHandmade.Services.Tests
 
 			ProductFormModel inputModel = new ProductFormModel() 
 			{
-				Name = "Test2",
+				Name = "Test3",
 				Description = "Lorem ipsum dolor sit amet",
 				ImageUrl = "Image url link here for test",
 				Price = 10.5m,
@@ -82,7 +82,7 @@ namespace JordyHandmade.Services.Tests
 			Assert.That(productCountAfterAdd, Is.EqualTo(productCountBeforeAdd + 1));
 
 			var newProduct = await this.dbContext.Products
-				.FirstOrDefaultAsync(p => p.Name == "Test2" && 
+				.FirstOrDefaultAsync(p => p.Name == "Test3" && 
 							p.CreatedOn.ToString("yyyy-MM-dd") == "2023-08-15" && 
 							p.CategoryId == 2);			
 
@@ -94,6 +94,27 @@ namespace JordyHandmade.Services.Tests
 			Assert.That(newProduct.CreatedOn.ToString("yyyy-MM-dd"), Is.EqualTo(inputModel.CreatedOn));
 			Assert.That(newProduct.QuantityInStock, Is.EqualTo(inputModel.QuantityInStock));
 			Assert.That(newProduct.CategoryId, Is.EqualTo(inputModel.CategoryId));
-		} 
+		}
+
+		[Test]
+		public async Task GetAllShouldReturnCorrectData() 
+		{
+			var result = await productService.GetAllAsync();
+
+			Assert.IsNotNull(result);
+
+			var allProductsInDb = await this.dbContext
+				.Products
+				.Where(p => !p.IsObsolete)
+				.ToArrayAsync();
+
+			Assert.That(result.Count(), Is.EqualTo(allProductsInDb.Count()));
+
+			var resultProduct = result.FirstOrDefault(p => p.Name == Product.Name);
+
+			Assert.IsNotNull(resultProduct);
+			Assert.That(resultProduct.ImageUrl, Is.EqualTo(Product.ImageUrl));
+			Assert.That(resultProduct.Price, Is.EqualTo(Product.Price));
+		}
 	}
 }

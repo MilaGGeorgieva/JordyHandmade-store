@@ -98,12 +98,70 @@
             OrderStatusViewModel orderStatus = new OrderStatusViewModel() 
             {
                 OrderId = orderId,
+                Status = "Collecting",
                 OrderedProducts = orderedProducts,
                 OrderTotal = orderedProducts.Sum(x => x.ProductQuantity * x.Price),
                 StartDate = orderDate
             };             
             
             return orderStatus;
+        }
+
+        public async Task<OrderStatusViewModel> GetOrderDetailsAsync(string orderId)
+        {
+            var orderedProducts = await this.dbContext
+                .OrdersProducts
+                .Where(op => op.OrderId.ToString() == orderId)
+                .Select(op => new OrderedProductViewModel()
+                {
+                    ProductId = op.ProductId.ToString(),
+                    ProductName = op.Product.Name,
+                    Price = op.Product.Price,
+                    ProductQuantity = op.ProductQuantity,
+                    ProductTotal = op.Product.Price * op.ProductQuantity,
+                })
+                .ToArrayAsync();
+
+            var order = await this.dbContext
+                .Orders
+                .Where(o => o.Id.ToString() == orderId)
+                .FirstAsync();
+
+            var orderDate = order.StartDate.ToString("yyyy-MM-dd H:mm");            
+
+            OrderStatusViewModel orderDetails = new OrderStatusViewModel()
+            {
+                OrderId = orderId,
+                Status = order.Status.ToString(),
+                OrderedProducts = orderedProducts,
+                OrderTotal = orderedProducts.Sum(x => x.ProductQuantity * x.Price),
+                StartDate = orderDate
+            };
+
+            return orderDetails;
+        }
+
+        public async Task UpdateOrderAsync(string orderId, string productId, OrderFormModel editModel)
+        {
+            OrderProduct productToEdit = await this.dbContext
+                .OrdersProducts
+                .Where(op => op.OrderId.ToString() == orderId && op.ProductId.ToString() == productId)
+                .FirstAsync();
+
+            productToEdit.ProductQuantity = editModel.Quantity;
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> GetProductQtyInOrderByIdsAsync(string orderId, string productId)
+        {
+            var productToEdit = await this.dbContext
+                .OrdersProducts
+                .Where(op => op.OrderId.ToString() == orderId && op.ProductId.ToString() == productId)
+                .FirstAsync();
+
+            int productQuantityInOrder = productToEdit.ProductQuantity;
+
+            return productQuantityInOrder;
         }
 
         public async Task<bool> OrderExistsByIdAsync(string id)
@@ -312,6 +370,6 @@
                 .AnyAsync(o => o.Id.ToString() == orderId && o.CustomerId.ToString() == customerId);           
 
             return result;
-        }
+        }        
     }
 }

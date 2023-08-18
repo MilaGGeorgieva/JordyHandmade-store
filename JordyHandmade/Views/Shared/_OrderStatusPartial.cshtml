@@ -7,8 +7,9 @@
             <th>Product name</th>
             <th>Price</th>
             <th>Product quantity</th>
-            <th>Product total</th>
+            <th>Product total</th>            
             <th>Remove this product</th>
+            <th>Edit Quantity</th>                       
         </tr>
         @foreach (var product in Model.OrderedProducts)
         {
@@ -17,11 +18,22 @@
                 <td>@product.Price</td>
                 <td>@product.ProductQuantity</td>
                 <td>@product.ProductTotal.ToString("f2")</td>
-                <td>
-                    <form class="input-group-sm" asp-controller="Order" asp-action="RemoveProduct" asp-route-id="@product.ProductId">
-                        <input type="submit" value="Remove product" class="fs-6 btn btn-danger mb-3 p-2" />
-                    </form>
-                </td>
+                @if (Model.Status == "Collecting")
+                {
+                    <td>
+                        <form class="input-group-sm" asp-controller="Order" asp-action="RemoveProduct" asp-route-id="@product.ProductId">
+                            <input type="submit" value="Remove product" class="fs-6 btn btn-danger mb-3 p-2" />
+                        </form>
+                    </td>
+                    <td>
+                        <a asp-controller="Order" asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-warning mb-3 p-2">Edit quantity</a>
+                    </td>
+                }
+                else
+                {
+                    <td><label class="text-center">❌</label></td>
+                    <td><label class="text-center">❌</label></td>
+                }                
             </tr>
         }
         <tr>

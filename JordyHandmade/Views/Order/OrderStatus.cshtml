@@ -9,8 +9,7 @@
 
 <partial name="_OrderStatusPartial" model="@Model">
 
-<div class="text-center row">    
-    <a asp-controller="Product" asp-action="All" class="btn btn-primary">Continue adding products</a>
-    <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-warning">Edit your order</a>
-    <a asp-controller="Order" asp-action="DeliveryData" asp-route-id="@Model.OrderId" class="btn btn-success">Go to delivery page</a>
+<div class="text-center row align-items-center flex-column">
+    <a asp-controller="Product" asp-action="All" class="btn btn-primary w-50">Continue adding products</a>    
+    <a asp-controller="Order" asp-action="DeliveryData" asp-route-id="@Model.OrderId" class="btn btn-success w-50">Go to delivery page</a>
 </div> 

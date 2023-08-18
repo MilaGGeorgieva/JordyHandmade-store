@@ -4,6 +4,8 @@
     {
         public string OrderId { get; set; } = null!;
 
+        public string? Status { get; set; }
+
         public IEnumerable<OrderedProductViewModel> OrderedProducts { get; set; } = null!;
 
         public decimal OrderTotal { get; set; }

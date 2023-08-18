@@ -16,10 +16,17 @@
 <p>Your products will be sent to you within 48 h. If you have any concerns you can get in tuch with us at ... </p>
 
 <p>If you are happy with our products and you will continue shopping in our store please join our list of discounts - we have a client card for you</p>
-<a asp-controller="ClientCard" asp-action="Create" class="btn btn-success">Card registration page</a>
 
-<p>You can keep trace of all your orders at your <a asp-controller="Order" asp-action="Mine">My orders page</a></p>
+<div class="text-center" mb="5">
+    <a asp-controller="ClientCard" asp-action="Create" class="btn btn-success">Card registration page</a>
+</div>
 
+<div class="text-center">
+    <p>You can keep trace of all your orders at your <a asp-controller="Order" asp-action="Mine">My orders page</a></p>
+</div>
 
-<p>If it happens you are not happy with our products you can have a look at our return policy options below: </p>
-<a asp-controller="Order" asp-action="ReturnPolicy">Return policy</a>
+<div class="text-center">
+    <p>If it happens you are not happy with our products you can have a look at our return policy options below: </p>
+    <a asp-controller="Order" asp-action="ReturnPolicy">Return policy</a>
+</div>
+
