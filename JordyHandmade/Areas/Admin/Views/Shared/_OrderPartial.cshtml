@@ -1,17 +1,17 @@
 ﻿@model OrderAllViewModel
 
-<div class="text-center row">    
-        <div class="card col-4" style="width: 20rem; ">
-            <div class="card-body">
-                <h5 class="card-title mt-1">Order dated @Model.StartDate</h5>
-                <h6 class="card-title mt-1">@Model.Status</h6>
-                <p class="mb-0"><span class="fw-bold">Customer: </span>@Model.CustomerName</p>
-                <p class="mb-0"><span class="fw-bold">Town: </span>@Model.TownName</p>
-                <p class="mb-0"><span class="fw-bold">End Date: </span>@Model.EndDate</p>
-                <p class="mb-0"><span class="fw-bold">Order total amount: </span>@Model.TotalAmount</p>
-            </div>           
+    
+<div class="card col-4 mx-2" style="width: 20rem; ">
+     <div class="card-body">
+          <h5 class="card-title mt-1">Order dated @Model.StartDate</h5>
+          <h6 class="card-title mt-1">@Model.Status</h6>
+          <p class="mb-0"><span class="fw-bold">Customer: </span>@Model.CustomerName</p>
+          <p class="mb-0"><span class="fw-bold">Town: </span>@Model.TownName</p>
+          <p class="mb-0"><span class="fw-bold">End Date: </span>@Model.EndDate</p>
+          <p class="mb-0"><span class="fw-bold">Order total amount: </span>@Model.TotalAmount</p>
+     </div>           
 
-            <a asp-area="" asp-controller="Order" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">View Details</a>
+     <a asp-area="" asp-controller="Order" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">View Details</a>
 
-        </div>    
-</div>
+</div>    
+
