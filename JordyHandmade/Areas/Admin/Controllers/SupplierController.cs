@@ -1,6 +1,7 @@
 ﻿namespace JordyHandmade.Web.Areas.Admin.Controllers
 {
 	using JordyHandmade.Services.Data.Interfaces;
+	using JordyHandmade.Web.ViewModels.Product;
 	using JordyHandmade.Web.ViewModels.Supplier;
 	using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,10 @@
 		
 		public async Task<IActionResult> All()
 		{
-			return View();
+			IEnumerable<SupplierAllViewModel> allSuppliers =
+				await this.supplierService.GetAllSuppliersAsync();					
+
+			return View(allSuppliers);
 		}		
 
 		public IActionResult Add() 

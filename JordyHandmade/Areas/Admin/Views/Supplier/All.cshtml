@@ -1,6 +1,29 @@
-﻿@section Styles{
-    <link rel="stylesheet" href="~/css/constr_style.css" />
+﻿@model IEnumerable<SupplierAllViewModel>
+
+@{
+    ViewData["Title"] = "All suppliers";
 }
 
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
 
-@await Html.PartialAsync("~/Views/Shared/_UnderConstructionPartial.cshtml")
+<div class="text-center row">
+    @foreach (var supplier in Model)
+    {
+            <div class="card col-4 mx-2" style="width: 20rem; ">
+                <div class="card-body">
+                    <h5 class="card-title mt-1">@supplier.SupplierName</h5>                
+                    <p class="mb-0"><span class="fw-bold"></span>@supplier.Website</p>
+                    <p class="mb-0"><span class="fw-bold"></span>@supplier.Email</p>
+                    <hr />
+                    <p class="mb-0"><span class="fw-bold"></span>@supplier.PhoneNumber</p>
+                    <p class="mb-0"><span class="fw-bold"></span>@supplier.TownName</p>
+                </div>
+
+                @*<div class="d-flex flex-row">
+                    <a asp-area="Admin" asp-controller="Supplier" asp-action="Edit" asp-route-id="@supplier.Id" class="btn btn-warning mb-2 w-50 p-3 me-2 fw-bold">Edit</a>
+                    <a asp-area="Admin" asp-controller="Supplier" asp-action="Delete" asp-route-id="@supplier.Id" class="btn btn-danger mb-2 w-50 p-3 ms-2 fw-bold">Delete</a>
+                </div>*@
+            </div>    
+    }        
+</div> 

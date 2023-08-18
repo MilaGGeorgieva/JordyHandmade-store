@@ -7,7 +7,9 @@
 	using JordyHandmade.Data.Models;
 	using JordyHandmade.Services.Data.Interfaces;
 	using JordyHandmade.Web.ViewModels.Supplier;
-	
+	using System.Collections.Generic;
+	using JordyHandmade.Web.ViewModels.Product;
+	using System.Collections;
 
 	public class SupplierService : ISupplierService
 	{
@@ -56,6 +58,25 @@
 
 			await this.dbContext.AddAsync(newSupplier);
 			await this.dbContext.SaveChangesAsync();
+		}
+
+		public async Task<IEnumerable<SupplierAllViewModel>> GetAllSuppliersAsync()
+		{
+			IEnumerable<SupplierAllViewModel> allSuppliers = await this.dbContext
+				.Suppliers
+				.Where(s => s.IsActive)
+				.Select(s => new SupplierAllViewModel() 
+				{
+					Id = s.Id.ToString(),
+					SupplierName = s.SupplierName,
+					Website = s.Website,
+					Email = s.Email,
+					PhoneNumber = s.PhoneNumber,
+					TownName = s.Address.Town.TownName
+				})
+				.ToArrayAsync();
+			
+			return allSuppliers;
 		}
 	}
 }
