@@ -17,9 +17,20 @@
         </div>
 }
 
-<div class="text-center row align-items-center flex-column">
-    <a asp-controller="Order" asp-action="Mine">Back to my orders</a>
-</div>
+@if (User.IsAdmin())
+{
+    <div class="text-center row align-items-center flex-column">
+       <a asp-area="Admin" asp-controller="Order" asp-action="All">Back to all orders</a>
+    </div>
+}
+else
+{
+    <div class="text-center row align-items-center flex-column">
+        <a asp-controller="Order" asp-action="Mine">Back to my orders</a>
+    </div>
+}
+
+
 
   
     

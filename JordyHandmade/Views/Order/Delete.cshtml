@@ -14,14 +14,14 @@
 
     <partial name="_OrderStatusPartial" model="@Model">
 
-    <div class="mb-3 d-flex justify-content-center flex-column">
-            <input type="submit" value="Delete" class="btn btn-danger" />            
+        <div class="text-center row align-items-center mb-3 flex-column">
+            <input type="submit" value="Delete" class="btn btn-danger w-50" />            
     </div>
 
-    <div class="text-center row">
-        <a asp-controller="Product" asp-action="All" class="btn btn-primary">Continue shopping</a>
-        <a asp-controller="Order" asp-action="Mine" class="btn btn-success">My orders</a>
-        <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-warning">Edit your order</a>
+        <div class="text-center row align-items-center flex-column">
+        <a asp-controller="Product" asp-action="All" class="btn btn-primary w-50">Continue shopping</a>
+        <a asp-controller="Order" asp-action="Mine" class="btn btn-success w-50">My orders</a>
+        <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-warning w-50">Edit your order</a>
     </div>
 
 </form>
